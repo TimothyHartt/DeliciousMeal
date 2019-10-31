@@ -221,16 +221,16 @@ ADD FOREIGN KEY (ingredient) REFERENCES ingredients(ingredientID);
 -- Add some fake users to the database for testing
 -- Each has a password of 'password'
 INSERT INTO users (username, firstName, lastName, email, salt, hashedPassword)
-VALUES ('alicea', 'Alice', 'A', 'alicea@email.com', 'XHh7VL6vxqTOMJCX', 'F77C83A9B2C71C0608D07716738D76822E5E44F7883B145AF12C4364127C7C6E');
+VALUES ('alicea', 'Alice', 'A', 'alicea@email.com', 'XHh7VL6vxqTOMJCX', 'f77c83a9b2c71c0608d07716738d76822e5e44f7883b145af12c4364127c7c6e');
 
 INSERT INTO users (username, firstName, lastName, email, salt, hashedPassword)
-VALUES ('bobb', 'Bob', 'B', 'bobb@email.com', 'dZkUKLeOavB3s8Cp', 'E657873F94C46CFF7D0563765F84D6083B7D56A5BECAFF4157B12A8AE601A42E');
+VALUES ('bobb', 'Bob', 'B', 'bobb@email.com', 'dZkUKLeOavB3s8Cp', 'e657873f94c46cff7d0563765f84d6083b7d56a5becaff4157b12a8ae601a42e');
 
 INSERT INTO users (username, firstName, lastName, email, salt, hashedPassword)
-VALUES ('charliec', 'Charlie', 'C', 'charliec@email.com', 'LuwBUkuFe7M24OK2', '3131757FE4961B7DC974E489D690385065AA9335B464B60C7C0CDC134478A46C');
+VALUES ('charliec', 'Charlie', 'C', 'charliec@email.com', 'LuwBUkuFe7M24OK2', '3131757fe4961b7dc974e489d690385065aa9335b464b60c7c0cdc134478a46c');
 
 INSERT INTO users (username, firstName, lastName, email, salt, hashedPassword)
-VALUES ('davidd', 'David', 'D', 'davidd@email.com', 'cR4rVr7bzrV3bYkG', '48E0C06EAAAA4052DFAD1E67EE3DDE9CF3F9AF47B3EBEA80EA48CB7B181CB0C5');
+VALUES ('davidd', 'David', 'D', 'davidd@email.com', 'cR4rVr7bzrV3bYkG', '48e0c06eaaaa4052dfad1e67ee3dde9cf3f9af47b3ebea80ea48cb7b181cb0c5');
 
 INSERT INTO users (username, firstName, lastName, email, salt, hashedPassword)
-VALUES ('edwarde', 'Edward', 'E', 'edwarde@email.com', 'O8AMlyp8qGPBetrH', '53C5E3DCD43B3064FEC1025B6FE03C4A9D31664C171A7D0859D873019797EF18');
+VALUES ('edwarde', 'Edward', 'E', 'edwarde@email.com', 'O8AMlyp8qGPBetrH', '53c5e3dcd43b3064fec1025b6fe03c4a9d31664c171a7d0859d873019797ef18');
