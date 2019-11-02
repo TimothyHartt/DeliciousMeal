@@ -1,10 +1,7 @@
 // Security functions for login and access protections
 
- //Store functions so they can be exported and accessed elsewhere
-var exports = module.exports = {};
-
 //SHA-256 Hash Function - taken from http://www.webtoolkit.info/javascript-sha256.html
-exports.SHA256 = function (str) {
+const SHA256 = function (str) {
     var chrsz = 8, hexcase = 0;
 
     function safe_add(x, y) {
@@ -126,7 +123,7 @@ exports.SHA256 = function (str) {
 }
 
 //Generate a new random salt for the user
-exports.generateSalt = function() {
+const generateSalt = function() {
     var size = 16;
     var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
     var length = chars.length;
@@ -138,3 +135,9 @@ exports.generateSalt = function() {
     }
     return newSalt;
 }
+
+//Store functions so they can be exported and accessed elsewhere
+module.exports = {
+    SHA256,
+    generateSalt
+};
