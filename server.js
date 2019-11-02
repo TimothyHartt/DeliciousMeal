@@ -77,7 +77,7 @@ app.post('/loginRequest', (req, res) => {
 
                 //Compare computed hash to user's stored password hash
                 if (hash == userPW) {
-                    //If they match, login and redirect to home page
+                    //If the passwords match, login and redirect to home page
                     req.session.loggedin = true;
                     req.session.username = username;
                     res.redirect('/home');
@@ -135,7 +135,7 @@ app.post('/createAccount', (req, res) => {
                                        VALUES ('${username}', '${firstName}', '${lastName}', '${email}', '${salt}', '${hash}')`;
                     connection.query(insertQuery, (error, result) => {
                         if (error) throw error;
-                        console.log(`New user with username '${username}' successfully added to database`);
+                        console.log(`- New user with username '${username}' successfully added to database`);
                     
                         //Log them in and redirect to homepage
                         req.session.loggedin = true;
