@@ -4,18 +4,26 @@
     //Add 'username not found' and 'incorrect password' alerts
     //Ensure valid form inputs are kept when submitting unsuccessfully
     //Add session cabability to maintain/track logins
+    //Let them log out
 
 //Grab packages
 const express = require('express');
 const mysql = require('mysql');
+const session = require('express-session');
 const bodyParser = require('body-parser');
-const security = require('./Security/SecurityTools.js'); //Import our security tools for hashing
+const security = require('./Backend-files/securityTools.js'); //Import our security tools for hashing
 
 //Set up express app
 var app = express();
 app.use(express.static(__dirname + '/')); //Use relative path names
 app.use(bodyParser.urlencoded({ extended: true })); //Body parser - lets us grab data from the form
 app.use(bodyParser.json());
+
+app.use(session({ //Track sessions
+    secret: security.generateSalt(), //Special session identifier - our salt function creates a value that works for this
+    resave: false, //Don't force a save of the session info if nothing has changed
+    saveUninitialized: true //Save a user if it is their first time visiting the site
+}));
 
 //Set up database connection
 var connection = mysql.createConnection({
@@ -29,17 +37,17 @@ var connection = mysql.createConnection({
 
 //Home Page
 app.get('/home', (req, res) => {
-    res.sendFile(__dirname + '/' + 'Home/HomePage.html');
+    res.sendFile(__dirname + '/' + 'Frontend-files/home.html');
 });
 
 //Login Page
 app.get('/login', (req, res) => {
-    res.sendFile(__dirname + '/' + 'Login/LoginPage.html');
+    res.sendFile(__dirname + '/' + 'Frontend-files/login.html');
 });
 
 //Registration Page
 app.get('/register', (req, res) => {
-    res.sendFile(__dirname + '/' + 'AccountCreation/AccountCreation.html');
+    res.sendFile(__dirname + '/' + 'Frontend-files/registration.html');
 });
 // ------------------------------- //
 
@@ -70,6 +78,8 @@ app.post('/loginRequest', (req, res) => {
                 //Compare computed hash to user's stored password hash
                 if (hash == userPW) {
                     //If they match, login and redirect to home page
+                    req.session.loggedin = true;
+                    req.session.username = username;
                     res.redirect('/home');
                     console.log(`- User '${username}' logged in successfully`);
                 }
@@ -78,16 +88,17 @@ app.post('/loginRequest', (req, res) => {
                     res.redirect('/login');
                     console.log(`- User '${username}' failed to login`);
                 }
-
             }
             //If username not found, go back to the login page
             else {
                 console.log(`- Login attempt failed for username '${username}'`);
                 res.redirect('/login');
-                //Alert user that username not found
-                //____________________
             }
         });
+    }
+    //If at least one field left blank, have them try again
+    else {
+        res.redirect('/login');
     }
 });
 
@@ -108,7 +119,8 @@ app.post('/createAccount', (req, res) => {
         //Check that the username does not already exist
         var checkQuery = `SELECT userID FROM users WHERE username = '${username}'`;
         connection.query(checkQuery, (error, results, fields) => {
-            if (results.length > 0) { //True if an entry already contains the username
+            //If username found, go back to register page
+            if (results.length > 0) {
                 res.redirect('/register');
             }
             //If username is new and unique
@@ -123,9 +135,14 @@ app.post('/createAccount', (req, res) => {
                                        VALUES ('${username}', '${firstName}', '${lastName}', '${email}', '${salt}', '${hash}')`;
                     connection.query(insertQuery, (error, result) => {
                         if (error) throw error;
-                        console.log(`New user with username '${username}' successfullly added to database`);
+                        console.log(`New user with username '${username}' successfully added to database`);
+                    
+                        //Log them in and redirect to homepage
+                        req.session.loggedin = true;
+                        req.session.username = username;
+                        console.log(`- User ${username} logged in following registration`);
+                        res.redirect('/home');
                     });
-                    res.redirect('/register'); //Head back to home page
                 }
                 //Go back if passwords don't match
                 else {
