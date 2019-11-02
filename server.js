@@ -136,7 +136,7 @@ app.post('/createAccount', (req, res) => {
                     connection.query(insertQuery, (error, result) => {
                         if (error) throw error;
                         console.log(`- New user with username '${username}' successfully added to database`);
-                    
+                        
                         //Log them in and redirect to homepage
                         req.session.loggedin = true;
                         req.session.username = username;
