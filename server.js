@@ -182,6 +182,7 @@ app.post('/logout', (req, res) => {
     res.redirect('/home');
 });
 
+//Search algorithm
 app.post('/search', (req, res) => {
     //INSERT SEARCH ALGORITHM HERE
 });
