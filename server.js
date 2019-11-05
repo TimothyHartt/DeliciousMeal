@@ -188,7 +188,7 @@ app.post('/search', (req, res) => {
 // ------------------------------------------------------- //
 
 //Handle 404 errors
-app.use(function (res) {
+app.use((req, res) => {
     res.status(404).send("404 - Page not found");
 })
 
