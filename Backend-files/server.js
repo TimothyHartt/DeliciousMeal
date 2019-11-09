@@ -1,10 +1,8 @@
 //Website server using Express
 
 //TODO
-    //Add 'username not found' and 'incorrect password' alerts using PUG
-    //Ensure valid form inputs are kept when submitting unsuccessfully
-    //Prevent new login attempts while already logged in (before they click the link, not after)
-    //Stop multiple people logging in with the same account
+    //Ensure valid form inputs are kept when submitting unsuccessfully (localStorage?)
+    //Destroy session / log out if browser closes or after a set period of inactivity
 
 //Grab packages
 const express = require('express');
@@ -32,6 +30,7 @@ var dbOptions = {
 
 var connection = mysql.createConnection(dbOptions);
 var sessionStore = new MySQLStore(dbOptions, connection);
+var onlineUsers = []; //Track which users are currently logged in
 
 //Set up session tracking
 app.use(session({
@@ -45,21 +44,24 @@ app.use(session({
 
 //Home Page
 app.get('/home', (req, res) => {
-    //Render the PUG page, passing in the session username
     res.render('home', {
-        un: req.session.username
+        un: req.session.username,
+        li: req.session.loggedin
     });
-    //res.sendFile(__dirname + '/' + 'Frontend-files/home.html');
 });
 
 //Login Page
 app.get('/login', (req, res) => {
-    res.sendFile(__dirname + '/' + 'Frontend-files/login.html');
+    res.render('login', {
+        err: req.query.errorMsg
+    });
 });
 
 //Registration Page
 app.get('/register', (req, res) => {
-    res.sendFile(__dirname + '/' + 'Frontend-files/registration.html');
+    res.render('registration', {
+        err: req.query.errorMsg
+    });
 });
 // ------------------------------- //
 
@@ -75,51 +77,51 @@ app.post('/loginRequest', (req, res) => {
     //Database query - Check username exists, grab salt and hashed password if it does
     var query = `SELECT salt, hashedPassword FROM users WHERE username = '${username}'`;
 
-    //Check the user is not already logged in
-    if (!req.session.user) {
-        //Query the database if both fields submitted
-        if (username && password) {
-            connection.query(query, (err, results) => {
-                if (err) throw err;
-
-                //If username found
-                if (results.length > 0) {
-                    //Put query results into a usable form
-                    var userSalt = results[0].salt;
-                    var userPW = results[0].hashedPassword;
-
-                    //Hash the given password with the user's salt
-                    var hash = security.SHA256(password + userSalt);
-
-                    //If the hash matches the stored password, login and redirect to home page
-                    if (hash == userPW) {
-                        req.session.loggedin = true;
-                        req.session.username = username;
-                        res.redirect('/home');
-                        console.log(`- User '${username}' logged in successfully`);
-                    }
-                    //If not, go back to the login page to try again
-                    else {
-                        res.redirect('/login');
-                        console.log(`- User '${username}' failed to login`);
-                    }
-                }
-                //If username not found, go back to the login page
-                else {
-                    console.log(`- Login attempt failed for username '${username}'`);
-                    res.redirect('/login');
-                }
-            });
-        }
-        //If at least one field left blank, have them try again
-        else {
-            res.redirect('/login');
-        }
+    //If user logged in elsewhere
+    if (onlineUsers.includes(username)) {
+        res.redirect('/login?errorMsg=User already logged in');
+        console.log(`- Redundant login attempt for '${username}'. User was already signed in.`);
+        return;
     }
-    //Redirect if they are already logged in
+
+    //Query the database if both fields submitted
+    if (username && password) {
+        connection.query(query, (err, results) => {
+            if (err) throw err;
+
+            //If username found
+            if (results.length > 0) {
+                //Put query results into a usable form
+                var userSalt = results[0].salt;
+                var userPW = results[0].hashedPassword;
+
+                //Hash the given password with the user's salt
+                var hash = security.SHA256(password + userSalt);
+
+                //If the hash matches the stored password, login and redirect to home page
+                if (hash == userPW) {
+                    req.session.loggedin = true;
+                    req.session.username = username;
+                    onlineUsers.push(username); //Add username to list of logged-in users
+                    res.redirect('/home');
+                    console.log(`- User '${username}' logged in successfully`);
+                }
+                //If not, go back to the login page to try again
+                else {
+                    res.redirect('/login?errorMsg=Incorrect password');
+                    console.log(`- User '${username}' failed to login`);
+                }
+            }
+            //If username not found, go back to the login page
+            else {
+                console.log(`- Login attempt failed for username '${username}'`);
+                res.redirect('/login?errorMsg=Username not found');
+            }
+        });
+    }
+    //If at least one field left blank, have them try again
     else {
-        res.redirect('/home');
-        console.log(`- User ${req.session.username} already logged in`);
+        res.redirect('/login?errorMsg=Please enter both fields');
     }
 });
 
@@ -144,7 +146,7 @@ app.post('/createAccount', (req, res) => {
             
             //If username already exists
             if (results.length > 0) {
-                res.redirect('/register');
+                res.redirect('/register?errorMsg=Username already in use');
             }
             else {
                 //If username is new and both passwords match, hash and salt the password
@@ -162,22 +164,27 @@ app.post('/createAccount', (req, res) => {
                         //Log them in and redirect to homepage
                         req.session.loggedin = true;
                         req.session.username = username;
+                        onlineUsers.push(username); //Add username to list of logged-in users
                         console.log(`- User ${username} logged in following registration`);
                         res.redirect('/home');
                     });
                 }
                 //Go back if passwords don't match
                 else {
-                    res.redirect('/register');
+                    res.redirect('/register?errorMsg=Passwords do not match');
                 }
             }
         });
+    }
+    else {
+        res.redirect('/register?errorMsg=Please submit all fields');
     }
 });
 
 //Log the user out by deleting their current session
 app.post('/logout', (req, res) => {
     console.log(`- Logged out user '${req.session.username}'`);
+    delete onlineUsers[onlineUsers.indexOf(req.session.username)];
     req.session.destroy();
     res.redirect('/home');
 });
