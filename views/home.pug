@@ -4,7 +4,10 @@ head
   title Delicious Meal
 h1 Delicious Meal
 p This is the home page in PUG
-p Welcome user #{un}
-a(href='http://127.0.0.1:5000/login') Log in to your account
-form(action='http://127.0.0.1:5000/logout' method='POST')
-  input(type='submit' value='Logout')
+if (li)
+ p Welcome user #{un}
+ form(action='http://127.0.0.1:5000/logout' method='POST')
+  input(type='submit' value='Log Out')
+else
+ form(action='http://127.0.0.1:5000/login' method='GET')
+  input(type='submit' value='Log In')
