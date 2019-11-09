@@ -1,0 +1,43 @@
+doctype html
+// Handles user account creation
+head
+  meta(charset='utf-8')
+  title Create an Account
+  link(rel='stylesheet' href='http://127.0.0.1:5000/Frontend-files/registration.css')
+  // Scripts
+  script(src='http://127.0.0.1:5000/Backend-files/securityTools.js')
+#accountCreationBox
+  form(action='http://127.0.0.1:5000/createAccount' method='post')
+    fieldset
+      legend Create an Account:
+      br
+      label(for='username') Username:
+      br
+      input(type='text' name='username' required='')
+      br
+      label(for='password') Password:
+      br
+      input(type='password' name='password' required='')
+      br
+      label(for='confirmPassword') Confirm Password:
+      br
+      input(type='password' name='confirmPassword' required='')
+      br
+      label(for='email') Email Address:
+      br
+      input(type='email' name='email' required='')
+      br
+      label(for='firstName') First Name:
+      br
+      input(type='text' name='firstName')
+      br
+      label(for='lastName') Last Name:
+      br
+      input(type='text' name='lastName')
+      br
+      input(type='submit' value='Submit')
+if (err)
+  p #{err}
+| Already have an account?
+br
+a(href='http://127.0.0.1:5000/login') Log In Here

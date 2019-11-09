@@ -1,0 +1,24 @@
+doctype html
+// Handles user logins
+head
+  meta(charset='utf-8')
+  title Log In
+  link(rel='stylesheet' href='http://127.0.0.1:5000/Frontend-files/login.css')
+#LoginBox
+  form(action='http://127.0.0.1:5000/loginRequest' method='post')
+    fieldset
+      legend  Log In: 
+      br
+      label(for='username') Username:
+      br
+      input(type='text' name='username' required='')
+      br
+      label(for='password') Password:
+      br
+      input(type='password' name='password' required='')
+      br
+      br
+      input(type='submit' value='Submit')
+if (err)
+  p #{err}
+a(href='http://127.0.0.1:5000/register') Create an account
