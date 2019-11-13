@@ -1,9 +1,5 @@
 //Website server using Express
 
-//TODO
-    //Ensure valid form inputs are kept when submitting unsuccessfully (localStorage?)
-    //Destroy session / log out if browser closes or after a set period of inactivity
-
 //Grab packages
 const express = require('express');
 const mysql = require('mysql');
@@ -25,7 +21,10 @@ var dbOptions = {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'deliciousmeal'
+    database: 'deliciousmeal',
+    clearExpired: true, //Remove expired sessions from the database
+    checkExpirationInterval: 86400000, //Check for and delete expired sessions every 24 hours
+    expiration: 86400000 //Sessions expire after 24 hours
 };
 
 var connection = mysql.createConnection(dbOptions);
@@ -52,16 +51,12 @@ app.get('/home', (req, res) => {
 
 //Login Page
 app.get('/login', (req, res) => {
-    res.render('login', {
-        err: req.query.errorMsg
-    });
+    res.render('login');
 });
 
 //Registration Page
 app.get('/register', (req, res) => {
-    res.render('registration', {
-        err: req.query.errorMsg
-    });
+    res.render('registration');
 });
 // ------------------------------- //
 
@@ -79,7 +74,10 @@ app.post('/loginRequest', (req, res) => {
 
     //If user logged in elsewhere
     if (onlineUsers.includes(username)) {
-        res.redirect('/login?errorMsg=User already logged in');
+        res.render('login', {
+            err: 'User already logged in',
+            un: username
+        });
         console.log(`- Redundant login attempt for '${username}'. User was already signed in.`);
         return;
     }
@@ -108,20 +106,22 @@ app.post('/loginRequest', (req, res) => {
                 }
                 //If not, go back to the login page to try again
                 else {
-                    res.redirect('/login?errorMsg=Incorrect password');
+                    res.render('login', {
+                        err: 'Incorrect password',
+                        un: username
+                    });
                     console.log(`- User '${username}' failed to login`);
                 }
             }
             //If username not found, go back to the login page
             else {
+                res.render('login', {
+                    err: 'Username not found',
+                    un: username
+                });
                 console.log(`- Login attempt failed for username '${username}'`);
-                res.redirect('/login?errorMsg=Username not found');
             }
         });
-    }
-    //If at least one field left blank, have them try again
-    else {
-        res.redirect('/login?errorMsg=Please enter both fields');
     }
 });
 
@@ -146,7 +146,13 @@ app.post('/createAccount', (req, res) => {
             
             //If username already exists
             if (results.length > 0) {
-                res.redirect('/register?errorMsg=Username already in use');
+                res.render('registration', {
+                    err: 'Username already in use',
+                    un: username,
+                    em: email,
+                    fn: firstName,
+                    ln: lastName
+                });
             }
             else {
                 //If username is new and both passwords match, hash and salt the password
@@ -171,21 +177,26 @@ app.post('/createAccount', (req, res) => {
                 }
                 //Go back if passwords don't match
                 else {
-                    res.redirect('/register?errorMsg=Passwords do not match');
+                    res.render('registration', {
+                        err: 'Passwords do not match',
+                        un: username,
+                        em: email,
+                        fn: firstName,
+                        ln: lastName
+                    });
                 }
             }
         });
-    }
-    else {
-        res.redirect('/register?errorMsg=Please submit all fields');
     }
 });
 
 //Log the user out by deleting their current session
 app.post('/logout', (req, res) => {
-    console.log(`- Logged out user '${req.session.username}'`);
-    delete onlineUsers[onlineUsers.indexOf(req.session.username)];
-    req.session.destroy();
+    if (req.session.username) {
+        console.log(`- Logged out user '${req.session.username}'`);
+        delete onlineUsers[onlineUsers.indexOf(req.session.username)];
+        req.session.destroy();
+    }
     res.redirect('/home');
 });
 
@@ -197,8 +208,13 @@ app.post('/search', (req, res) => {
 
 //Handle 404 errors
 app.use((req, res) => {
-    res.status(404).send("404 - Page not found");
-})
+    res.status(404).send('Error 404 - Page Not Found');
+});
+
+//Handle 500 errors
+app.use((error, req, res, next) => {
+    res.status(500).send('Error 500 - Internal Server Error');
+});
 
 // Leave the NodeJS web server listening on port 5000
 var server = app.listen(5000, () => {
