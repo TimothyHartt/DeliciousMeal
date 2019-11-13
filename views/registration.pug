@@ -13,7 +13,7 @@ head
       br
       label(for='username') Username:
       br
-      input(type='text' name='username' required='')
+      input(type='text' name='username' required='' value=un)
       br
       label(for='password') Password:
       br
@@ -25,15 +25,15 @@ head
       br
       label(for='email') Email Address:
       br
-      input(type='email' name='email' required='')
+      input(type='email' name='email' required='' value=em)
       br
       label(for='firstName') First Name:
       br
-      input(type='text' name='firstName')
+      input(type='text' name='firstName' value=fn ? fn : NULL)
       br
       label(for='lastName') Last Name:
       br
-      input(type='text' name='lastName')
+      input(type='text' name='lastName' value=ln ? ln : NULL)
       br
       input(type='submit' value='Submit')
 if (err)
