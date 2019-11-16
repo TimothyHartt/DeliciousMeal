@@ -58,9 +58,99 @@ app.get('/login', (req, res) => {
 app.get('/register', (req, res) => {
     res.render('registration');
 });
+
+//User Profile Page
+app.get('/user/:name', (req, res) => {
+    //Make sure the user is logged in and trying to access their own profile
+    if (req.params.name === req.session.username) {
+        res.render('user', {
+            un: req.session.username
+        });
+    }
+    else {
+        res.send("You must be logged in as that user to view their profile");
+    }
+});
+
+//User Initial Setup Page
+// This is called automatically right after registration but can be called again any time
+app.get('/user/:name/initialsetup', (req, res) => {
+    //Make sure the user is logged in and trying to access their own page
+    if (req.params.name === req.session.username) {
+        res.render('initialsetup', {
+            un: req.session.username
+        });
+    }
+    else {
+        res.send("You must be logged in as that user");
+    }
+});
+
+//User saved recipes
+app.get('/user/:name/favorites', (req, res) => {
+    //Make sure the user is logged in and trying to access their own page
+    if (req.params.name === req.session.username) {
+        res.render('favorites', {
+            un: req.session.username
+        });
+    }
+    else {
+        res.send("You must be logged in as that user");
+    }
+});
+
+//User settings
+app.get('/user/:name/settings', (req, res) => {
+    //Make sure the user is logged in and trying to access their own page
+    if (req.params.name === req.session.username) {
+        res.render('settings', {
+            un: req.session.username
+        });
+    }
+    else {
+        res.send("You must be logged in as that user");
+    }
+});
+
+//Recipe page
+app.get('/recipe/:recipeid', (req, res) => {
+
+    //Grab the recipe data based on the ID
+    var query = `SELECT * FROM recipes WHERE recipeID = ${req.params.recipeid}`;
+    
+    connection.query(query, (err, results) => {
+        if (err) throw err;
+
+        //If a result is found
+        if (results.length > 0) {
+            var recipe = results[0];
+
+            //Get the username of the recipe's author based on their ID
+            connection.query(`SELECT username FROM users WHERE userID = ${recipe.author}`, (err, results) => {
+                if (err) throw err;
+
+                //Show the page, including the username we found
+                res.render('recipe', {
+                    name: recipe.recipeName,
+                    instructions: recipe.instructions,
+                    author: results[0].username,
+                    description: recipe.descriptionText,
+                    prepT: recipe.prepTime,
+                    cookT: recipe.cookTime,
+                    totalT: recipe.totalTime
+                    //Add any other data we need here
+                });
+            });
+        }
+        //If no recipe exists with that ID
+        else {
+            res.send("Recipe not found");
+        }
+    });
+});
 // ------------------------------- //
 
-// ------ Methods for login, account creation, etc. ------ //
+// ------ Methods for important events ------ //
 
 //Process user login
 app.post('/loginRequest', (req, res) => {
@@ -167,12 +257,12 @@ app.post('/createAccount', (req, res) => {
                         if (err) throw err;
                         console.log(`- New user with username '${username}' successfully added to database`);
                         
-                        //Log them in and redirect to homepage
+                        //Log them in and send them to initial setup
                         req.session.loggedin = true;
                         req.session.username = username;
                         onlineUsers.push(username); //Add username to list of logged-in users
                         console.log(`- User ${username} logged in following registration`);
-                        res.redirect('/home');
+                        res.redirect('/user/' + username + '/initialsetup');
                     });
                 }
                 //Go back if passwords don't match
@@ -203,6 +293,11 @@ app.post('/logout', (req, res) => {
 //Search algorithm
 app.post('/search', (req, res) => {
     //INSERT SEARCH ALGORITHM HERE
+});
+
+//Add a user's initial setup results to their database entry
+app.post('/submitInitialSetup', (req, res) => {
+    //create/populate flavor index, insert into db based on session.username
 });
 // ------------------------------------------------------- //
 
