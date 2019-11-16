@@ -61,6 +61,7 @@ app.get('/register', (req, res) => {
 
 //User Profile Page
 app.get('/user/:name', (req, res) => {
+    
     //Make sure the user is logged in and trying to access their own profile
     if (req.params.name === req.session.username) {
         res.render('user', {
@@ -75,6 +76,7 @@ app.get('/user/:name', (req, res) => {
 //User Initial Setup Page
 // This is called automatically right after registration but can be called again any time
 app.get('/user/:name/initialsetup', (req, res) => {
+    
     //Make sure the user is logged in and trying to access their own page
     if (req.params.name === req.session.username) {
         res.render('initialsetup', {
@@ -88,10 +90,46 @@ app.get('/user/:name/initialsetup', (req, res) => {
 
 //User saved recipes
 app.get('/user/:name/favorites', (req, res) => {
+    
     //Make sure the user is logged in and trying to access their own page
     if (req.params.name === req.session.username) {
-        res.render('favorites', {
-            un: req.session.username
+
+        //Get the user's id based on their username
+        var query = `SELECT userID FROM users WHERE username = '${req.session.username}'`;
+        connection.query(query, (err, results) => {
+            if (err) throw err;
+            var id = results[0].userID;
+
+            //Get all recipes that are favorited by the user
+            var recipeQuery = `SELECT recipe FROM savedRecipes WHERE userIndex = ${id}`;
+            connection.query(recipeQuery, (err, results) => {
+                if (err) throw err;
+
+                //Add all favorite recipe ids to a list
+                var savedRecipes = [];
+                for (var i = 0; i < results.length; i++) {
+                    savedRecipes.push(results[i].recipe);
+                }
+
+                //Grab the names of each favorite recipe
+                var recipeNameQuery = `SELECT recipeName FROM recipes WHERE recipeID IN (?)`;
+                connection.query(recipeNameQuery, [savedRecipes], (err, results) => {
+                    if (err) throw err;
+
+                    //Add all recipe names to a list
+                    var recipeNames = [];
+                    for (var i = 0; i < results.length; i++) {
+                        recipeNames.push(results[i].recipeName);
+                    }
+
+                    //Load the page, passing in the ids and names of each favorite recipe
+                    res.render('favorites', {
+                        un: req.session.username,
+                        recipes: savedRecipes,
+                        names: recipeNames
+                    });
+                });
+            });
         });
     }
     else {
@@ -101,6 +139,7 @@ app.get('/user/:name/favorites', (req, res) => {
 
 //User settings
 app.get('/user/:name/settings', (req, res) => {
+    
     //Make sure the user is logged in and trying to access their own page
     if (req.params.name === req.session.username) {
         res.render('settings', {
@@ -282,6 +321,8 @@ app.post('/createAccount', (req, res) => {
 
 //Log the user out by deleting their current session
 app.post('/logout', (req, res) => {
+    
+    //Make sure they are logged in first
     if (req.session.username) {
         console.log(`- Logged out user '${req.session.username}'`);
         delete onlineUsers[onlineUsers.indexOf(req.session.username)];
