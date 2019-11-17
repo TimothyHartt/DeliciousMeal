@@ -101,34 +101,44 @@ app.get('/user/:name/favorites', (req, res) => {
             var id = results[0].userID;
 
             //Get all recipes that are favorited by the user
-            var recipeQuery = `SELECT recipe FROM savedRecipes WHERE userIndex = ${id}`;
+            var recipeQuery = `SELECT recipe FROM savedRecipes WHERE userIndex = ${id} ORDER BY recipe ASC`;
             connection.query(recipeQuery, (err, results) => {
                 if (err) throw err;
-
+                
                 //Add all favorite recipe ids to a list
                 var savedRecipes = [];
                 for (var i = 0; i < results.length; i++) {
                     savedRecipes.push(results[i].recipe);
                 }
 
-                //Grab the names of each favorite recipe
-                var recipeNameQuery = `SELECT recipeName FROM recipes WHERE recipeID IN (?)`;
-                connection.query(recipeNameQuery, [savedRecipes], (err, results) => {
-                    if (err) throw err;
+                //If the user has recipes saved
+                if (savedRecipes.length > 0) {
+                    //Grab the names of each favorite recipe
+                    var recipeNameQuery = `SELECT recipeName FROM recipes WHERE recipeID IN (?) ORDER BY recipeID ASC`;
+                    connection.query(recipeNameQuery, [savedRecipes], (err, results) => {
+                        if (err) throw err;
 
-                    //Add all recipe names to a list
-                    var recipeNames = [];
-                    for (var i = 0; i < results.length; i++) {
-                        recipeNames.push(results[i].recipeName);
-                    }
+                        //Add all recipe names to a list
+                        var recipeNames = [];
+                        for (var i = 0; i < results.length; i++) {
+                            recipeNames.push(results[i].recipeName);
+                        }
 
-                    //Load the page, passing in the ids and names of each favorite recipe
+                        //Load the page, passing in the ids and names of each favorite recipe
+                        res.render('favorites', {
+                            un: req.session.username,
+                            recipes: savedRecipes,
+                            names: recipeNames
+                        });
+                    });
+                }
+                //If the user has no recipes saved
+                else {
                     res.render('favorites', {
                         un: req.session.username,
-                        recipes: savedRecipes,
-                        names: recipeNames
+                        recipes: savedRecipes
                     });
-                });
+                }
             });
         });
     }
