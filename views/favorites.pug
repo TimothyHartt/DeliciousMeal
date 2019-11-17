@@ -3,11 +3,14 @@ head
  meta(charset='utf-8')
  title #{un}'s Favorites
 h1 #{un}'s Favorite Recipes
-ul
- - var link
- - var rName
- each val, index in recipes
-  - link = 'http://127.0.0.1:5000/recipe/' + val;
-  - rName = names[index];
-  li
-   a(href=link) #{rName}
+if recipes.length > 0
+ ul
+  - var link
+  - var rName
+  each val, index in recipes
+   - link = 'http://127.0.0.1:5000/recipe/' + val;
+   - rName = names[index];
+   li
+    a(href=link) #{rName}
+else
+ p You have no saved recipes
