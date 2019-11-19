@@ -235,14 +235,14 @@ VALUES ('davidd', 'David', 'D', 'davidd@email.com', 'cR4rVr7bzrV3bYkG', '48e0c06
 INSERT INTO users (username, firstName, lastName, email, salt, hashedPassword)
 VALUES ('edwarde', 'Edward', 'E', 'edwarde@email.com', 'O8AMlyp8qGPBetrH', '53c5e3dcd43b3064fec1025b6fe03c4a9d31664c171a7d0859d873019797ef18');
 
-//Add some ingredients (PLEASE ADD TO THIS!!!)
+-- Add some ingredients (PLEASE ADD TO THIS!!!)
 
-//Example ingredient - all scores are 0-100 and add up to 100
+-- Example ingredient -> all scores are 0-100 and add up to 100
 INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
 VALUES ('banana', 'fruit', 95, 0, 0, 5, 0);
 
-//Example ingredient nutrition index
-//Serving size is in grams, all vitamins/minerals are daily intake percentages (i.e. 10 = 10% of recommended daily intake), everything else except calories are in grams or micrograms
+-- Example ingredient nutrition index
+-- Serving size is in grams, all vitamins/minerals are daily intake percentages (i.e. 10 = 10% of recommended daily intake), everything else except calories are in grams or micrograms
 
 INSERT INTO ingredientnutritionindexes (ingredient, servingSize, calories, totalFat, caloriesFromFat, saturatedFat, transFat, cholesterol, omega3s, sodium, totalCarbs, dietaryFiber, sugars, protein, vitaminA, vitaminC, calcium, iron, magnesium, potassium, zinc)
 VALUES (1, 126, 112, 0.4, 3.5, 0.1, 0, 0, 34, 1.3, 28.8, 3.3, 15.4, 1.4, 2, 18, 1, 2, 9, 13, 1);
