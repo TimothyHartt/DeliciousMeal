@@ -1,0 +1,64 @@
+doctype html
+head
+ meta(charset='utf-8')
+ title Add a recipe
+h2 Add a recipe
+form(action='http://127.0.0.1:5000/submitRecipe' method='post')
+ fieldset(style='width:0px')
+  legend Add a recipe:
+  br
+  label(for='recipename') Recipe Name:
+  br
+  input(type='text' name='recipeName' required='' value=rname)
+  br
+  label(for='instructions') Instructions:
+  br
+  textarea(name='instructions' rows='10' cols='50' required='' value=inst)
+  br
+  label(for='description') Description:
+  br
+  textarea(name='description' rows='5' cols='50' required='' value=desc)
+  br
+  label(for='prepTime') Preperation time (minutes):
+  br
+  input(type='number' min="0" max="100000" name='prepTime' required='' value=prep)
+  br
+  label(for='cookTime') Cooking time (minutes):
+  br
+  input(type='number' min="0" max="100000" name='cookTime' required='' value=cook)
+  br
+  label(for='servings') Yield (Servings):
+  br
+  input(type='number' min="1" max="1000" name='servings' required='' value=srv)
+  br
+  label(for='difficulty') Difficulty:
+  br
+  select(name='difficulty' value=diff)
+   option(value='' selected) -
+   option(value='easy') Easy
+   option(value='moderate') Moderate
+   option(value='hard') Hard
+   option(value='expert') Expert
+  br
+  label(for='meal') Meal:
+  br
+  select(name='meal' value=meal)
+   option(value='' selected) -
+   option(value='breakfast') Breakfast
+   option(value='brunch') Brunch
+   option(value='lunch') Lunch
+   option(value='dinner') Dinner
+   option(value='snack') Snack
+   option(value='snack') Side Dish
+   option(value='dessert') Dessert
+   option(value='drink') Drink
+  br
+  label(for='country') Country of Origin:
+  br
+  select(name='country' value=cntry)
+   option(value='' selected) -
+   each val in countryList
+    option(value=val) #{val}
+  br
+  br
+  input(type='submit' value='Submit')
