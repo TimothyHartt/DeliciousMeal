@@ -95,14 +95,14 @@ app.get('/user/:name/favorites', (req, res) => {
     if (req.params.name === req.session.username) {
 
         //Get the user's id based on their username
-        var query = `SELECT userID FROM users WHERE username = '${req.session.username}'`;
-        connection.query(query, (err, results) => {
+        var query = 'SELECT userID FROM users WHERE username = ?';
+        connection.query(query, [req.session.username], (err, results) => {
             if (err) throw err;
             var id = results[0].userID;
 
             //Get all recipes that are favorited by the user
-            var recipeQuery = `SELECT recipe FROM savedRecipes WHERE userIndex = ${id} ORDER BY recipe ASC`;
-            connection.query(recipeQuery, (err, results) => {
+            var recipeQuery = 'SELECT recipe FROM savedRecipes WHERE userIndex = ? ORDER BY recipe ASC';
+            connection.query(recipeQuery, [id], (err, results) => {
                 if (err) throw err;
                 
                 //Add all favorite recipe ids to a list
@@ -114,7 +114,7 @@ app.get('/user/:name/favorites', (req, res) => {
                 //If the user has recipes saved
                 if (savedRecipes.length > 0) {
                     //Grab the names of each favorite recipe
-                    var recipeNameQuery = `SELECT recipeName FROM recipes WHERE recipeID IN (?) ORDER BY recipeID ASC`;
+                    var recipeNameQuery = 'SELECT recipeName FROM recipes WHERE recipeID IN (?) ORDER BY recipeID ASC';
                     connection.query(recipeNameQuery, [savedRecipes], (err, results) => {
                         if (err) throw err;
 
@@ -165,9 +165,9 @@ app.get('/user/:name/settings', (req, res) => {
 app.get('/recipe/:recipeid', (req, res) => {
 
     //Grab the recipe data based on the ID
-    var query = `SELECT * FROM recipes WHERE recipeID = ${req.params.recipeid}`;
+    var query = 'SELECT * FROM recipes WHERE recipeID = ?';
     
-    connection.query(query, (err, results) => {
+    connection.query(query, [req.params.recipeid], (err, results) => {
         if (err) throw err;
 
         //If a result is found
@@ -175,7 +175,7 @@ app.get('/recipe/:recipeid', (req, res) => {
             var recipe = results[0];
 
             //Get the username of the recipe's author based on their ID
-            connection.query(`SELECT username FROM users WHERE userID = ${recipe.author}`, (err, results) => {
+            connection.query('SELECT username FROM users WHERE userID = ?', [recipe.author], (err, results) => {
                 if (err) throw err;
 
                 //Show the page, including the username we found
@@ -186,7 +186,8 @@ app.get('/recipe/:recipeid', (req, res) => {
                     description: recipe.descriptionText,
                     prepT: recipe.prepTime,
                     cookT: recipe.cookTime,
-                    totalT: recipe.totalTime
+                    totalT: recipe.totalTime,
+                    id: req.params.recipeid
                     //Add any other data we need here
                 });
             });
@@ -197,6 +198,66 @@ app.get('/recipe/:recipeid', (req, res) => {
         }
     });
 });
+
+//Recipe reviews
+app.get('/recipe/:recipeid/reviews', (req, res) => {
+
+    //Get all the reviews for this recipe, with the most recent ones first
+    var query = 'SELECT * FROM reviews WHERE recipe = ? ORDER BY submissionDate DESC';
+    connection.query(query, [req.params.recipeid], (err, results) => {
+        if (err) throw err;
+
+        if (results.length > 0) {
+            var reviewList = results;
+
+            //Store the user ids for each recipe in both an array and a string
+            var ids = [];
+            var fields = ''; //This will indicate the order in which we want the usernames returned, based on the user id
+            for (i = 0; i < reviewList.length; i++) {
+                ids.push(reviewList[i].author);
+                fields += reviewList[i].author + ',';
+            }
+            fields = fields.slice(0, -1); //Remove the last comma from the string
+
+            //Get the author's username for each id we grabbed, and return them in the same order as the recipes they wrote
+            var unQuery = `SELECT username FROM users WHERE userID IN (?) ORDER BY FIELD(userID, ${fields})`;
+            connection.query(unQuery, [ids], (err, results) => {
+                if (err) throw error;
+
+                //Add the author's username to the end of the json for each review
+                for (i = 0; i < results.length; i++) {
+                    reviewList[i].username = results[i].username;
+                }
+
+                //Load the page and pass in the list of reviews as a JSON
+                res.render('reviews', {
+                    un: req.session.username,
+                    reviews: reviewList
+                });
+            });
+        }
+        else {
+            res.send("No reviews for this recipe yet");
+        }
+    });
+});
+
+//Let the user add a new recipe
+app.get('/addrecipe', (req, res) => {
+
+    //Only let people add recipes while logged in
+    if (req.session.loggedin) {
+        res.render('addrecipe', {
+            countryList: funcs.getCountries()
+        });
+    }
+    else {
+        res.render('login', {
+            err: 'Please log in to add a new recipe'
+        });
+    }
+});
+
 // ------------------------------- //
 
 // ------ Methods for important events ------ //
@@ -209,7 +270,7 @@ app.post('/loginRequest', (req, res) => {
     var password = req.body.password;
 
     //Database query - Check username exists, grab salt and hashed password if it does
-    var query = `SELECT salt, hashedPassword FROM users WHERE username = '${username}'`;
+    var query = 'SELECT salt, hashedPassword FROM users WHERE username = ?';
 
     //If user logged in elsewhere
     if (onlineUsers.includes(username)) {
@@ -223,7 +284,7 @@ app.post('/loginRequest', (req, res) => {
 
     //Query the database if both fields submitted
     if (username && password) {
-        connection.query(query, (err, results) => {
+        connection.query(query, [username], (err, results) => {
             if (err) throw err;
 
             //If username found
@@ -279,8 +340,8 @@ app.post('/createAccount', (req, res) => {
     if (username && password && confirmPassword && email) {
 
         //Check that the username does not already exist
-        var checkQuery = `SELECT userID FROM users WHERE username = '${username}'`;
-        connection.query(checkQuery, (err, results) => {
+        var checkQuery = 'SELECT userID FROM users WHERE username = ?';
+        connection.query(checkQuery, [username], (err, results) => {
             if (err) throw err;
             
             //If username already exists
@@ -300,9 +361,8 @@ app.post('/createAccount', (req, res) => {
                     var hash = security.SHA256(password + salt);
 
                     //Add the new user to the database
-                    var insertQuery = `INSERT INTO users (username, firstName, lastName, email, salt, hashedPassword)
-                                       VALUES ('${username}', '${firstName}', '${lastName}', '${email}', '${salt}', '${hash}')`;
-                    connection.query(insertQuery, (err) => {
+                    var insertQuery = 'INSERT INTO users (username, firstName, lastName, email, salt, hashedPassword) VALUES (?, ?, ?, ?, ?, ?)';
+                    connection.query(insertQuery, [username, firstName, lastName, email, salt, hash], (err) => {
                         if (err) throw err;
                         console.log(`- New user with username '${username}' successfully added to database`);
                         
@@ -346,9 +406,51 @@ app.post('/search', (req, res) => {
     //INSERT SEARCH ALGORITHM HERE
 });
 
-//Add a user's initial setup results to their database entry
-app.post('/submitInitialSetup', (req, res) => {
-    //create/populate flavor index, insert into db based on session.username
+//Add a recipe
+app.post('/submitRecipe', (req, res) => {
+
+    var recipeName = req.body.recipeName;
+    var instructions = req.body.instructions;
+    var description = req.body.description;
+    var prepTime = req.body.prepTime;
+    var cookTime = req.body.cookTime;
+    var servings = req.body.servings;
+    var difficulty = req.body.difficulty;
+    var meal = req.body.meal;
+    var country = req.body.country;
+
+    var totalTime = parseInt(prepTime) + parseInt(cookTime);
+
+    //Get the user's ID based on their username
+    var idQuery = 'SELECT userID FROM users WHERE username = ?';
+    connection.query(idQuery, [req.session.username], (err, results) => {
+        if (err) throw err;
+        var author = results[0].userID;
+
+        //Add null if they don't choose a difficulty, meal, or country
+        if (difficulty == '')
+            difficulty = null;
+        if (meal == '')
+            meal = null;
+        if (country == '')
+            country = null;
+
+        //Add the recipe
+        var insertQuery = 'INSERT INTO recipes(recipeName, instructions, author, countryOfOrigin, descriptionText, prepTime, cookTime, totalTime, yield, difficulty, meal, uploadDate) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, SYSDATE())';
+        connection.query(insertQuery, [recipeName, instructions, author, country, description, prepTime, cookTime, totalTime, servings, difficulty, meal], (err) => {
+            if (err) throw err;
+
+            //Get the id of the recipe we just added
+            var recipeQuery = 'SELECT recipeID FROM recipes ORDER BY uploadDate DESC LIMIT 1'; //Grab the newest recipe
+            connection.query(recipeQuery, [author], (err, results) => {
+                if (err) throw err;
+                var id = results[0].recipeID;
+
+                //Go to the new recipe page
+                res.redirect('recipe/' + id);
+            });
+        });
+    });
 });
 // ------------------------------------------------------- //
 
@@ -358,7 +460,8 @@ app.use((req, res) => {
 });
 
 //Handle 500 errors
-app.use((error, req, res, next) => {
+app.use((err, req, res, next) => {
+    console.error(err.stack); //Log error details
     res.status(500).send('Error 500 - Internal Server Error');
 });
 
