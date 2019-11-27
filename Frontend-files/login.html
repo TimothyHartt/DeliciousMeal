@@ -2,22 +2,21 @@
 <!doctype html>
 <html lang="en">
   <head style="margin:0px;">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
+  	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Login Page</title>
-	
-	<link rel='icon' href='../resources/img/favicon.ico' type='image/x-icon'/>
-    <!-- Bootstrap core CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
     <!-- Custom styles for this template -->
     <link rel="stylesheet" type = "text/css"  href="login.css"/> 
-     <style>
-
-    </style>
+    <script type="text/javascript" src="./project.js"></script>
   </head>
-  <body class="center text-center">
+  <body id="signIn" class="center text-center">
+  		  <img src="imageedit_10_4957959440.png" alt="logo" id="logo" height="200" width="200">
 		  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 		  <div class = "form-group" id = "Username">
 		  	<input type="text" class="form-control" id="Username" aria-describedby="Username" placeholder="Username or email">
@@ -25,8 +24,61 @@
 		   <div class = "form-group">
 		  	<input type="text" class="form-control" id="Password" aria-describedby="Password" placeholder="Password">
 		  </div>
-	  <a class="btn btn-lg btn-primary" href="mealPlaning.html">Sign in</a>
-  	  <a class="btn btn-lg btn-primary" href="registration.html">Register</a>
-	</form>
+	  <a class="btn btn-lg btn-danger" href="mealPlaning.html">Sign in</a>
+	  <a href="#myModal" class="btn btn-lg btn-info btn-danger" data-toggle="modal" onclick="openModal()">Register</a>
+
+	<!-- Modal HTML -->
+	<div id="myModal" class="modal fade">
+		<div class="modal-dialog modal-login">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="avatar">
+						<img src="https://www.tutorialrepublic.com/examples/images/avatar.png" alt="Avatar">
+					</div>
+					<h4 class="modal-title">Sign Up page</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<input type="text" class="form-control" name="firstName" placeholder="First Name"
+							required="required">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" name="lastName" placeholder="Last Name"
+							required="required">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" name="email" placeholder="email"
+							required="required">
+					</div>
+					<div class="form-group">
+						<input id="psw" type="password" class="form-control" name="password" placeholder="Password"
+							required="required">
+					</div>
+					<div class="form-group">
+						<input id="cpsw" type="password" class="form-control" name="confirm password"
+							placeholder="Confirm Password" required="required">
+					</div>
+					<div class="form-group">
+						<button id="my_submit_button" class="btn btn-primary btn-block login-btn" disabled
+							onClick="onClickFunction()">Sign Up</button>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div id="message" style="display:block">
+						<h3>Password must contain the following:</h3>
+						<p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+						<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+						<p id="number" class="invalid">A <b>number</b></p>
+						<p id="length" class="invalid">Minimum <b>8 characters</b></p>
+						<p id="match" class="invalid">Password and Confirm Password Match</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br /><br /><br />
+
+
 </body>
 </html>
