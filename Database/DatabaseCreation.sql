@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS recipes(
     recipeID INT PRIMARY KEY AUTO_INCREMENT,
     recipeName VARCHAR(64) NOT NULL,
     instructions VARCHAR(2048) NOT NULL,
-    rating DECIMAL(1),
+    rating DOUBLE,
     author INT,
     numRatings INT DEFAULT 0,
     numLikes INT DEFAULT 0,
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS recipeIngredients(
     recipeIngredientID INT PRIMARY KEY AUTO_INCREMENT,
     recipe INT NOT NULL,
     ingredient INT NOT NULL,
-    quantity DECIMAL(4),
+    quantity DOUBLE,
     measurementUnit VARCHAR(32)
 );
 
@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS reviews(
     reviewID INT PRIMARY KEY AUTO_INCREMENT,
     recipe INT NOT NULL,
     author INT,
-    rating DECIMAL(1),
+    rating DOUBLE,
     submissionDate DATETIME,
     reviewText VARCHAR(2048),
     numLikes INT DEFAULT 0
