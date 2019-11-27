@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS recipeIngredients(
     recipeIngredientID INT PRIMARY KEY AUTO_INCREMENT,
     recipe INT NOT NULL,
     ingredient INT NOT NULL,
-    quantity smallINT(4),
+    quantity DECIMAL(4),
     measurementUnit VARCHAR(32)
 );
 
