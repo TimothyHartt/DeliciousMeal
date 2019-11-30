@@ -404,6 +404,8 @@ app.post('/logout', (req, res) => {
 //Search algorithm
 app.post('/search', (req, res) => {
     //INSERT SEARCH ALGORITHM HERE
+    
+    var searchAlgorithm = '';
 });
 
 //Add a recipe
