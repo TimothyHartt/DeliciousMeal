@@ -156,6 +156,65 @@ app.get('/user/:name/favorites', (req, res) => {
     }
 });
 
+//Recipes created by the user
+app.get('/user/:name/myrecipes', (req, res) => {
+
+    //Make sure the user is logged in and trying to access their own page
+    if (req.params.name === req.session.username) {
+
+        //Get the user's id based on their username
+        var query = 'SELECT userID FROM users WHERE username = ?';
+        connection.query(query, [req.session.username], (err, results) => {
+            if (err) throw err;
+            var id = results[0].userID;
+
+            //Get all recipes created by the user
+            var recipeQuery = 'SELECT recipeID FROM recipes WHERE author = ? ORDER BY recipeID ASC';
+            connection.query(recipeQuery, [id], (err, results) => {
+                if (err) throw err;
+
+                //Add all recipe ids to a list
+                var recipeList = [];
+                for (var i = 0; i < results.length; i++) {
+                    recipeList.push(results[i].recipeID);
+                }
+
+                //If the user has submitted any recipes
+                if (recipeList.length > 0) {
+                    //Grab the names of each recipe
+                    var recipeNameQuery = 'SELECT recipeName FROM recipes WHERE recipeID IN (?) ORDER BY recipeID ASC';
+                    connection.query(recipeNameQuery, [recipeList], (err, results) => {
+                        if (err) throw err;
+
+                        //Add all recipe names to a list
+                        var recipeNames = [];
+                        for (var i = 0; i < results.length; i++) {
+                            recipeNames.push(results[i].recipeName);
+                        }
+
+                        //Load the page, passing in the ids and names of each recipe
+                        res.render('myrecipes', {
+                            un: req.session.username,
+                            recipes: recipeList,
+                            names: recipeNames
+                        });
+                    });
+                }
+                //If the user has not submitted any recipes
+                else {
+                    res.render('myrecipes', {
+                        un: req.session.username,
+                        recipes: recipeList
+                    });
+                }
+            });
+        });
+    }
+    else {
+        res.send("You must be logged in as that user");
+    }
+});
+
 //User settings
 app.get('/user/:name/settings', (req, res) => {
 
@@ -174,9 +233,8 @@ app.get('/user/:name/settings', (req, res) => {
 app.get('/recipe/:recipeid', (req, res) => {
 
     //Grab the recipe data based on the ID
-    var query = 'SELECT * FROM recipes WHERE recipeID = ?';
-
-    connection.query(query, [req.params.recipeid], (err, results) => {
+    var recipeQuery = 'SELECT * FROM recipes WHERE recipeID = ?';
+    connection.query(recipeQuery, [req.params.recipeid], (err, results) => {
         if (err) throw err;
 
         //If a result is found
@@ -184,20 +242,63 @@ app.get('/recipe/:recipeid', (req, res) => {
             var recipe = results[0];
 
             //Get the username of the recipe's author based on their ID
-            connection.query('SELECT username FROM users WHERE userID = ?', [recipe.author], (err, results) => {
+            var unQuery = 'SELECT username FROM users WHERE userID = ?';
+            connection.query(unQuery, [recipe.author], (err, results) => {
                 if (err) throw err;
 
-                //Show the page, including the username we found
-                res.render('recipeExample', {
-                    name: recipe.recipeName,
-                    instructions: recipe.instructions,
-                    author: results[0].username,
-                    description: recipe.descriptionText,
-                    prepT: recipe.prepTime,
-                    cookT: recipe.cookTime,
-                    totalT: recipe.totalTime,
-                    id: req.params.recipeid
-                    //Add any other data we need here
+                var user = results[0].username;
+
+                //Get all the ingredients and their data
+                var ingQuery = 'SELECT ingredient, quantity, measurementUnit FROM recipeIngredients WHERE recipe = ?';
+                connection.query(ingQuery, [req.params.recipeid], (err, results) => {
+                    if (err) throw err;
+
+                    //Populate an array with lists containing the quantity and unit of each ingredient
+                    var ingredients = [];
+                    var ingredientData = [];
+                    var list = [];
+
+                    for (i = 0; i < results.length; i++) {
+                        list = [];
+                        list.push(results[i].quantity);
+                        list.push(results[i].measurementUnit);
+                        ingredients.push(results[i].ingredient);
+                        ingredientData.push(list);
+                    }
+
+                    //If the recipe has ingredients, get their names
+                    if (ingredients.length > 0) {
+                        var ingNameQuery = 'SELECT ingredientName FROM ingredients WHERE ingredientID IN (?)';
+                        connection.query(ingNameQuery, [ingredients], (err, results) => {
+                            if (err) throw err;
+
+                            //Add the names to each ingredient
+                            for (i = 0; i < results.length; i++) {
+                                ingredientData[i].push(results[0].ingredientName);
+                            }
+                            showRecipe();
+                        });
+                    }
+                    //If there are no ingredients, show the recipe without getting ingredients
+                    else {
+                        showRecipe();
+                    }
+
+                    function showRecipe() {
+                        //Show the page, including the ingredient data we collected
+                        res.render('recipe', {
+                            ingredientList: ingredientData,
+                            name: recipe.recipeName,
+                            instructions: recipe.instructions,
+                            author: user,
+                            description: recipe.descriptionText,
+                            prepT: recipe.prepTime,
+                            cookT: recipe.cookTime,
+                            totalT: recipe.totalTime,
+                            id: req.params.recipeid
+                            //Add any other data we need here
+                        });
+                    }
                 });
             });
         }
@@ -251,13 +352,28 @@ app.get('/recipe/:recipeid/reviews', (req, res) => {
     });
 });
 
-//Let the user add a new recipe
+//Let the user add a new recipe with ingredients
 app.get('/addrecipe', (req, res) => {
 
     //Only let people add recipes while logged in
     if (req.session.loggedin) {
-        res.render('addrecipeExample', {
-            countryList: funcs.getCountries()
+
+        //Get all the ingredients
+        var ingredients = [];
+        var inQuery = 'SELECT * FROM ingredients';
+        connection.query(inQuery, (err, results) => {
+
+            for (i = 0; i < results.length; i++) {
+                ingredients.push(results[i].ingredientName);
+            }
+
+            req.session.ingredientList = ingredients; //Store ingredients in a local session variable
+
+            res.render('addrecipe', {
+                countryList: funcs.getCountries(),
+                ing: ingredients,
+                units: funcs.getUnits()
+            });
         });
     }
     else {
@@ -276,7 +392,7 @@ app.get('/addIngredient', (req,res) =>{
     });
   }else{
     res.render('addIngredient', {
-        err: 'Please log in to add a new recipe'
+        err: 'Please log in to add a new Ingredient'
     });
   }
 
@@ -466,7 +582,42 @@ app.post('/submitRecipe', (req, res) => {
     var meal = req.body.meal;
     var country = req.body.country;
 
+    var ingredient = req.body.ingredient;
+    var quantity = req.body.quantity;
+    var unit = req.body.unit;
+
     var totalTime = parseInt(prepTime) + parseInt(cookTime);
+
+    //Convert the quantity to a decimal
+    var intPattern = /^\d{1,3}$/;
+    var floatPattern = /^\d{1,3}\.\d{1,3}$/;
+    var fractionPattern = /^[1-9]\/[1-9]$/;
+
+    //If they gave a valid fraction, make it a decimal
+    if (fractionPattern.test(quantity)) {
+        quantity = funcs.fractionToDecimal(quantity);
+    }
+    //If they gave a valid integer or decimal, make it a decimal
+    else if (floatPattern.test(quantity) || intPattern.test(quantity)) {
+        quantity = parseFloat(quantity);
+    }
+    //Try again if they gave invalid input
+    else {
+        quantity = 0;
+        res.render('addrecipe', {
+            err: 'Please enter a valid quantity. Fractions should be in the form "x/y".',
+            countryList: funcs.getCountries(),
+            ing: req.session.ingredientList,
+            units: funcs.getUnits(),
+            rname: recipeName,
+            inst: instructions,
+            desc: description,
+            prep: prepTime,
+            cook: cookTime,
+            srv: servings
+        });
+        return;
+    }
 
     //Get the user's ID based on their username
     var idQuery = 'SELECT userID FROM users WHERE username = ?';
@@ -474,7 +625,7 @@ app.post('/submitRecipe', (req, res) => {
         if (err) throw err;
         var author = results[0].userID;
 
-        //Add null if they don't choose a difficulty, meal, or country
+        //Add null if they didn't choose a difficulty, meal, or country
         if (difficulty == '')
             difficulty = null;
         if (meal == '')
@@ -491,10 +642,30 @@ app.post('/submitRecipe', (req, res) => {
             var recipeQuery = 'SELECT recipeID FROM recipes ORDER BY uploadDate DESC LIMIT 1'; //Grab the newest recipe
             connection.query(recipeQuery, [author], (err, results) => {
                 if (err) throw err;
-                var id = results[0].recipeID;
+                var recipeid = results[0].recipeID;
 
-                //Go to the new recipe page
-                res.redirect('recipe/' + id);
+                //If they included ingredients
+                if (ingredient != '') {
+                    //Get the id for the ingredient we added
+                    var ingredientQuery = 'SELECT ingredientID FROM ingredients WHERE ingredientName = ?';
+                    connection.query(ingredientQuery, [ingredient], (err, results) => {
+                        if (err) throw err;
+                        var ingredientID = results[0].ingredientID;
+
+                        //Add a new recipe ingredient
+                        var ingredientInsertQuery = 'INSERT INTO recipeIngredients(recipe, ingredient, quantity, measurementUnit) VALUES(?, ?, ?, ?)';
+                        connection.query(ingredientInsertQuery, [recipeid, ingredientID, quantity, unit], (err) => {
+                            if (err) throw err;
+
+                            //Go to the new recipe page
+                            res.redirect('recipe/' + recipeid);
+                        });
+                    });
+                }
+                //If they didn't include ingredients
+                else {
+                    res.redirect('recipe/' + recipeid);
+                }
             });
         });
     });
@@ -512,7 +683,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Error 500 - Internal Server Error');
 });
 
-// Leave the NodeJS web server listening on port 5000
+//Leave the NodeJS web server listening on port 5000
 var server = app.listen(5000, () => {
     var port = server.address().port;
     console.log('Server listening on port', port);

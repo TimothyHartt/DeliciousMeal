@@ -1,0 +1,8 @@
+doctype html
+head
+ meta(charset='utf-8')
+ title Recipe review
+each val, index in reviews
+ h2 #{reviews[index].username}
+ h4 #{reviews[index].rating} / 5
+ p #{reviews[index].reviewText}
