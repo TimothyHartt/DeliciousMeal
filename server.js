@@ -237,6 +237,8 @@ app.get('/recipe/:recipeid', (req, res) => {
             connection.query(unQuery, [recipe.author], (err, results) => {
                 if (err) throw err;
 
+                var user = results[0].username;
+
                 //Get all the ingredients and their data
                 var ingQuery = 'SELECT ingredient, quantity, measurementUnit FROM recipeIngredients WHERE recipe = ?';
                 connection.query(ingQuery, [req.params.recipeid], (err, results) => {
@@ -255,22 +257,31 @@ app.get('/recipe/:recipeid', (req, res) => {
                         ingredientData.push(list);
                     }
 
-                    //Get the ingredient names
-                    var ingNameQuery = 'SELECT ingredientName FROM ingredients WHERE ingredientID IN (?)';
-                    connection.query(ingNameQuery, [ingredients], (err, results) => {
-                        if (err) throw err;
+                    //If the recipe has ingredients, get their names
+                    if (ingredients.length > 0) {
+                        var ingNameQuery = 'SELECT ingredientName FROM ingredients WHERE ingredientID IN (?)';
+                        connection.query(ingNameQuery, [ingredients], (err, results) => {
+                            if (err) throw err;
 
-                        //Add the names to each ingredient
-                        for (i = 0; i < results.length; i++) {
-                            ingredientData[i].push(results[0].ingredientName);
-                        }
+                            //Add the names to each ingredient
+                            for (i = 0; i < results.length; i++) {
+                                ingredientData[i].push(results[0].ingredientName);
+                            }
+                            showRecipe();
+                        });
+                    }
+                    //If there are no ingredients, show the recipe without getting ingredients
+                    else {
+                        showRecipe();
+                    }
 
+                    function showRecipe() {
                         //Show the page, including the ingredient data we collected
                         res.render('recipe', {
                             ingredientList: ingredientData,
                             name: recipe.recipeName,
                             instructions: recipe.instructions,
-                            author: results[0].username,
+                            author: user,
                             description: recipe.descriptionText,
                             prepT: recipe.prepTime,
                             cookT: recipe.cookTime,
@@ -278,7 +289,7 @@ app.get('/recipe/:recipeid', (req, res) => {
                             id: req.params.recipeid
                             //Add any other data we need here
                         });
-                    });
+                    }
                 });
             });
         }
