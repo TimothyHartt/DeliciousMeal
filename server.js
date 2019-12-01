@@ -243,10 +243,13 @@ app.get('/recipe/:recipeid', (req, res) => {
                     if (err) throw err;
 
                     //Populate an array with lists containing the quantity and unit of each ingredient
-                    var ingredients = [], ingredientData = [], list = [];
+                    var ingredients = [];
+                    var ingredientData = [];
+                    var list = [];
+
                     for (i = 0; i < results.length; i++) {
                         list = [];
-                        list.push(funcs.decimalToFraction(results[i].quantity));
+                        list.push(results[i].quantity);
                         list.push(results[i].measurementUnit);
                         ingredients.push(results[i].ingredient);
                         ingredientData.push(list);
