@@ -20,7 +20,7 @@ app.set('view engine', 'pug'); //Use PUG for dynamic HTML
 var dbOptions = {
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'password123',
     database: 'deliciousmeal',
     clearExpired: true, //Remove expired sessions from the database
     checkExpirationInterval: 86400000, //Check for and delete expired sessions every 24 hours
@@ -30,6 +30,15 @@ var dbOptions = {
 var connection = mysql.createConnection(dbOptions);
 var sessionStore = new MySQLStore(dbOptions, connection);
 var onlineUsers = []; //Track which users are currently logged in
+
+connection.connect(function(err) {
+    if (err) {
+        console.error('Error:- ' + err.stack);
+        return;
+    }
+
+    console.log('Connected Id:- ' + connection.threadId);
+});
 
 //Set up session tracking
 app.use(session({
@@ -43,7 +52,7 @@ app.use(session({
 
 //Home Page
 app.get('/home', (req, res) => {
-    res.render('home', {
+    res.render('homeExample', {
         un: req.session.username,
         li: req.session.loggedin
     });
@@ -51,20 +60,20 @@ app.get('/home', (req, res) => {
 
 //Login Page
 app.get('/login', (req, res) => {
-    res.render('login');
+    res.render('loginExample');
 });
 
 //Registration Page
 app.get('/register', (req, res) => {
-    res.render('registration');
+    res.render('registrationExample');
 });
 
 //User Profile Page
 app.get('/user/:name', (req, res) => {
-    
+
     //Make sure the user is logged in and trying to access their own profile
     if (req.params.name === req.session.username) {
-        res.render('user', {
+        res.render('userExample', {
             un: req.session.username
         });
     }
@@ -76,7 +85,7 @@ app.get('/user/:name', (req, res) => {
 //User Initial Setup Page
 // This is called automatically right after registration but can be called again any time
 app.get('/user/:name/initialsetup', (req, res) => {
-    
+
     //Make sure the user is logged in and trying to access their own page
     if (req.params.name === req.session.username) {
         res.render('initialsetup', {
@@ -90,7 +99,7 @@ app.get('/user/:name/initialsetup', (req, res) => {
 
 //User saved recipes
 app.get('/user/:name/favorites', (req, res) => {
-    
+
     //Make sure the user is logged in and trying to access their own page
     if (req.params.name === req.session.username) {
 
@@ -104,7 +113,7 @@ app.get('/user/:name/favorites', (req, res) => {
             var recipeQuery = 'SELECT recipe FROM savedRecipes WHERE userIndex = ? ORDER BY recipe ASC';
             connection.query(recipeQuery, [id], (err, results) => {
                 if (err) throw err;
-                
+
                 //Add all favorite recipe ids to a list
                 var savedRecipes = [];
                 for (var i = 0; i < results.length; i++) {
@@ -125,7 +134,7 @@ app.get('/user/:name/favorites', (req, res) => {
                         }
 
                         //Load the page, passing in the ids and names of each favorite recipe
-                        res.render('favorites', {
+                        res.render('favoritesExample', {
                             un: req.session.username,
                             recipes: savedRecipes,
                             names: recipeNames
@@ -134,7 +143,7 @@ app.get('/user/:name/favorites', (req, res) => {
                 }
                 //If the user has no recipes saved
                 else {
-                    res.render('favorites', {
+                    res.render('favoritesExample', {
                         un: req.session.username,
                         recipes: savedRecipes
                     });
@@ -149,10 +158,10 @@ app.get('/user/:name/favorites', (req, res) => {
 
 //User settings
 app.get('/user/:name/settings', (req, res) => {
-    
+
     //Make sure the user is logged in and trying to access their own page
     if (req.params.name === req.session.username) {
-        res.render('settings', {
+        res.render('settingsExample', {
             un: req.session.username
         });
     }
@@ -166,7 +175,7 @@ app.get('/recipe/:recipeid', (req, res) => {
 
     //Grab the recipe data based on the ID
     var query = 'SELECT * FROM recipes WHERE recipeID = ?';
-    
+
     connection.query(query, [req.params.recipeid], (err, results) => {
         if (err) throw err;
 
@@ -179,7 +188,7 @@ app.get('/recipe/:recipeid', (req, res) => {
                 if (err) throw err;
 
                 //Show the page, including the username we found
-                res.render('recipe', {
+                res.render('recipeExample', {
                     name: recipe.recipeName,
                     instructions: recipe.instructions,
                     author: results[0].username,
@@ -247,16 +256,33 @@ app.get('/addrecipe', (req, res) => {
 
     //Only let people add recipes while logged in
     if (req.session.loggedin) {
-        res.render('addrecipe', {
+        res.render('addrecipeExample', {
             countryList: funcs.getCountries()
         });
     }
     else {
-        res.render('login', {
+        res.render('loginExample', {
             err: 'Please log in to add a new recipe'
         });
     }
 });
+
+
+
+app.get('/addIngredient', (req,res) =>{
+  if(req.session.loggedin){
+    res.render('addIngredient', {
+
+    });
+  }else{
+    res.render('addIngredient', {
+        err: 'Please log in to add a new recipe'
+    });
+  }
+
+});
+
+
 
 // ------------------------------- //
 
@@ -274,7 +300,7 @@ app.post('/loginRequest', (req, res) => {
 
     //If user logged in elsewhere
     if (onlineUsers.includes(username)) {
-        res.render('login', {
+        res.render('loginExmple', {
             err: 'User already logged in',
             un: username
         });
@@ -306,7 +332,7 @@ app.post('/loginRequest', (req, res) => {
                 }
                 //If not, go back to the login page to try again
                 else {
-                    res.render('login', {
+                    res.render('loginExample', {
                         err: 'Incorrect password',
                         un: username
                     });
@@ -315,7 +341,7 @@ app.post('/loginRequest', (req, res) => {
             }
             //If username not found, go back to the login page
             else {
-                res.render('login', {
+                res.render('loginExample', {
                     err: 'Username not found',
                     un: username
                 });
@@ -343,10 +369,10 @@ app.post('/createAccount', (req, res) => {
         var checkQuery = 'SELECT userID FROM users WHERE username = ?';
         connection.query(checkQuery, [username], (err, results) => {
             if (err) throw err;
-            
+
             //If username already exists
             if (results.length > 0) {
-                res.render('registration', {
+                res.render('registrationExample', {
                     err: 'Username already in use',
                     un: username,
                     em: email,
@@ -365,7 +391,7 @@ app.post('/createAccount', (req, res) => {
                     connection.query(insertQuery, [username, firstName, lastName, email, salt, hash], (err) => {
                         if (err) throw err;
                         console.log(`- New user with username '${username}' successfully added to database`);
-                        
+
                         //Log them in and send them to initial setup
                         req.session.loggedin = true;
                         req.session.username = username;
@@ -376,7 +402,7 @@ app.post('/createAccount', (req, res) => {
                 }
                 //Go back if passwords don't match
                 else {
-                    res.render('registration', {
+                    res.render('registrationExample', {
                         err: 'Passwords do not match',
                         un: username,
                         em: email,
@@ -391,7 +417,7 @@ app.post('/createAccount', (req, res) => {
 
 //Log the user out by deleting their current session
 app.post('/logout', (req, res) => {
-    
+
     //Make sure they are logged in first
     if (req.session.username) {
         console.log(`- Logged out user '${req.session.username}'`);
@@ -404,8 +430,27 @@ app.post('/logout', (req, res) => {
 //Search algorithm
 app.post('/search', (req, res) => {
     //INSERT SEARCH ALGORITHM HERE
-    
+
     var searchAlgorithm = '';
+});
+
+app.post('/submitIngredient', (req,res ) =>{
+  var ingredientName = req.body.ingredientName;
+  var foodType = req.body.foodType;
+  var sweetIndex = req.body.sweetIndex;
+  var saltyIndex = req.body.saltyIndex;
+  var sourIndex = req.body.sourIndex;
+  var bitterIndex = req.body.bitterIndex;
+  var umamiIndex = req.body.umamiIndex;
+  var spiciness = req.body.Spicy;
+
+
+
+  var insertQuery = 'INSERT INTO Ingredients( ingredientName, foodType, sweetScore, saltyScore, sourScore, bitterScore,umamiScore,spiciness) VALUES (?,?,?,?,?,?,?,?)';
+  connection.query(insertQuery, [ingredientName,foodType,sweetIndex,saltyIndex,sourIndex,bitterIndex,umamiIndex,spiciness], (err) => {
+    if(err) throw err;
+
+  });
 });
 
 //Add a recipe

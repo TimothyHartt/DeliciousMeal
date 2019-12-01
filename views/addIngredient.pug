@@ -1,0 +1,43 @@
+doctype html
+head
+ meta(charset='utf-8')
+ title Add an Ingredient
+h2 Add an ingredient
+form(action='http://127.0.0.1:5000/submitIngredient' method='post')
+ fieldset(style='width:0px')
+  legend Add an Ingredient:
+  br
+  label(for='ingredientName') Ingredient Name:
+  br
+  input(type='text' name='ingredientName' required='' value=rname)
+  br
+  label(for='foodType') Food Type:
+  br
+  textarea(name='foodType' rows='5' cols='50' required='' value=foodT)
+  br
+  label(for = 'sweetIndex') Sweet Index:
+  br
+  input(type = 'number' min = "1" max = "10" name = 'sweetIndex' require = '' value = sweetI)
+  br
+  label(for = 'saltyIndex') Salty Index:
+  br
+  input(type = 'number' min = "1" max = "10" name = 'saltyIndex' require = '' value = saltyI)
+  br
+  label(for = 'sourIndex') Sour Index:
+  br
+  input(type = 'number' min = "1" max = "10" name = 'soutIndex' require = '' value = sourI)
+  br
+  label(for = 'bitterIndex') Bitter Index:
+  br
+  input(type = 'number' min = "1" max = "10" name = 'bitterIndex' require = '' value = bitterI)
+  br
+  label(for = 'umamiIndex') Umami Index:
+  br
+  input(type = 'number' min = "1" max = "10" name = 'umamiIndex' require = '' value = umamiI)
+  br
+  label(for = 'Spicy') Spiciness Scale:
+  br
+  input(type = 'number' min = "1" max = "10" name = 'Spicy' require = '' value = spicyS)
+  br
+  br
+  input(type='submit' value='Submit')
