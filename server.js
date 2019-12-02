@@ -296,6 +296,7 @@ app.get('/recipe/:recipeid', (req, res) => {
                             cookT: recipe.cookTime,
                             totalT: recipe.totalTime,
                             id: req.params.recipeid
+                            tools: funcs //Make the server functions accessible from the page
                             //Add any other data we need here
                         });
                     }
@@ -416,7 +417,7 @@ app.post('/loginRequest', (req, res) => {
 
     //If user logged in elsewhere
     if (onlineUsers.includes(username)) {
-        res.render('loginExmple', {
+        res.render('loginExample', {
             err: 'User already logged in',
             un: username
         });
@@ -569,7 +570,7 @@ app.post('/submitIngredient', (req,res ) =>{
   });
 });
 
-//Add a recipe
+//Add a recipe (Incomplete - currently only allows one ingredient)
 app.post('/submitRecipe', (req, res) => {
 
     var recipeName = req.body.recipeName;
