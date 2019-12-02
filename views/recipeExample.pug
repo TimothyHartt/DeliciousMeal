@@ -2,11 +2,27 @@ doctype html
 head
  meta(charset='utf-8')
  title Delicious Meal - #{name}
+ script(src='http://127.0.0.1:5000/Backend-files/serverFunctions.js' type='text/javascript')
+- var multiplier = 1.0; //Increases ingredient quantities for more servings
+- var qty, amount, plural;
 h1 #{name}
 h4 by #{author}
 br
 p "#{description}"
+br
+if (ingredientList.length > 0)
+ h3 Ingredients
+ ul
+  each val in ingredientList
+   li
+    - qty = val[0] * multiplier;
+    - amount = tools.decimalToFraction(parseFloat(qty));
+    - plural = (qty > 1.0) ? 's' : '';
+    |#{amount}&nbsp;#{val[1]}#{plural} of #{val[2]}
+ br
 p Prep Time: #{prepT} minutes | Cook Time: #{cookT} minutes | Total Time: #{totalT} minutes
 br
 h3 Instructions
 p #{instructions}
+br
+a(href='http://127.0.0.1:5000/recipe/' + id + '/reviews') Reviews
