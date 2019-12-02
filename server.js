@@ -550,7 +550,24 @@ app.post('/logout', (req, res) => {
 app.post('/search', (req, res) => {
     //INSERT SEARCH ALGORITHM HERE
 
-    var searchAlgorithm = '';
+    var searchAlgorithm = ''; //REPLACE WITH REAL ALGORITHM
+    var recipes = [];
+
+    connection.query(searchAlgorithm, (err, results) => {
+        if (err) throw err;
+
+        var data = [];
+        for (i = 0; i < results.length; i++) {
+            data = [];
+            data.push(results[i].recipeID);
+            data.push(results[i].recipeName);
+            recipes.push(data);
+        }
+
+        res.render('searchresults', {
+            results: recipes
+        });
+    });
 });
 
 app.post('/submitIngredient', (req,res ) =>{
