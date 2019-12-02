@@ -241,6 +241,99 @@ VALUES ('edwarde', 'Edward', 'E', 'edwarde@email.com', 'O8AMlyp8qGPBetrH', '53c5
 INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
 VALUES ('banana', 'fruit', 95, 0, 0, 5, 0);
 
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('mango', 'fruit', 90, 0, 3, 6, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('apple', 'fruit', 90, 0, 0, 6, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('orange', 'fruit', 90, 0, 10, 6, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('strawberry', 'fruit', 90, 0, 4, 6, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('blueberry', 'fruit', 68, 0, 13, 6, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('rasberry', 'fruit', 65, 0, 4, 6, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('blackberry', 'fruit', 70, 0, 7, 6, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('pineapple', 'fruit', 90, 0, 10, 6, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('peach', 'fruit', 85, 0, 0, 6, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('red peppers', 'vegetable', 5, 20, 5, 0, 20);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('green peppers', 'vegetable', 4, 25, 5, 0, 20);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('yellow peppers', 'vegetable', 5, 20, 0, 0, 15);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('asparagus', 'vegetable', 0, 20, 0, 0, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('potato', 'vegetable', 0, 18, 4, 0, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('brocolli', 'vegetable', 3, 9, 0, 0, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('corn', 'vegetable', 5, 20, 5, 0, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('tomato', 'vegetable', 46, 16, 5, 0, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('chicken', 'protien', 0, 10, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('ham', 'protien', 0, 10, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('beef', 'protien', 0, 20, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('goat', 'protien', 0, 20, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('egg', 'protien', 0, 5, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('white rice', 'grain', 0, 0, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('quoina', 'grain', 0, 10, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('cheddar cheese', 'dairy', 0, 70, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('pepperjack cheese', 'dairy', 0, 70, 0, 5, 45);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('american cheese', 'dairy', 0, 65, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('2% milk', 'dairy', 10, 0, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('whole milk', 'dairy', 15, 0, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('almond milk', 'dairy', 35, 0, 0, 5, 0);
+
+INSERT INTO ingredients (ingredientName, foodType, sweetScore, saltyScore, sourScore, umamiScore, spiciness)
+VALUES ('soy milk', 'dairy', 35, 0, 0, 5, 0);
+
 -- Example ingredient nutrition index
 -- Serving size is in grams, all vitamins/minerals are daily intake percentages (i.e. 10 = 10% of recommended daily intake), everything else except calories are in grams or micrograms
 
