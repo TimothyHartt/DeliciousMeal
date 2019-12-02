@@ -240,6 +240,7 @@ app.get('/recipe/:recipeid', (req, res) => {
         //If a result is found
         if (results.length > 0) {
             var recipe = results[0];
+            var yield = results[0].yield; //Number of servings
 
             //Get the username of the recipe's author based on their ID
             var unQuery = 'SELECT username FROM users WHERE userID = ?';
@@ -295,6 +296,7 @@ app.get('/recipe/:recipeid', (req, res) => {
                             prepT: recipe.prepTime,
                             cookT: recipe.cookTime,
                             totalT: recipe.totalTime,
+                            servings: yield,
                             id: req.params.recipeid
                             tools: funcs //Make the server functions accessible from the page
                             //Add any other data we need here
