@@ -550,7 +550,7 @@ app.post('/logout', (req, res) => {
 app.post('/search', (req, res) => {
     //INSERT SEARCH ALGORITHM HERE
 
-    var searchAlgorithm = ''; //REPLACE WITH REAL ALGORITHM
+    var searchAlgorithm = 'funcs.searchFunctionBasic()'; //REPLACE WITH REAL ALGORITHM
     var recipes = [];
 
     connection.query(searchAlgorithm, (err, results) => {
