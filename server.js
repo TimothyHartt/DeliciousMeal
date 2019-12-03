@@ -297,7 +297,7 @@ app.get('/recipe/:recipeid', (req, res) => {
                             cookT: recipe.cookTime,
                             totalT: recipe.totalTime,
                             servings: yield,
-                            id: req.params.recipeid
+                            id: req.params.recipeid,
                             tools: funcs //Make the server functions accessible from the page
                             //Add any other data we need here
                         });
@@ -552,20 +552,28 @@ app.post('/search', (req, res) => {
     var searchAlgorithm = 'SELECT recipeName, rating, totalTime, recipeID FROM recipes where soundex(recipeName) = soundex(?)';
     var recipes = [];
 
-    connection.query(searchAlgorithm, (err, results) => {
+    connection.query(searchAlgorithm, [req.body.searchText], (err, results) => {
         if (err) throw err;
-
-        var data = [];
-        for (i = 0; i < results.length; i++) {
-            data = [];
-            data.push(results[i].recipeID);
-            data.push(results[i].recipeName);
-            recipes.push(data);
+        
+        if (results.length > 0) {
+            
+            var data = [];
+            for (i = 0; i < results.length; i++) {
+                data = [];
+                data.push(results[i].recipeID);
+                data.push(results[i].recipeName);
+                recipes.push(data);
+            }
+            
+            res.render('searchresultsExample', {
+                results: recipes
+            });
         }
-
-        res.render('searchresults', {
-            results: recipes
-        });
+        else {
+            res.render('searchresultsExample', {
+                err: 'No results found'
+            });
+        }
     });
 });
 
