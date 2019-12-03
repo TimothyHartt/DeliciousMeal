@@ -1,15 +1,32 @@
+
+body
+{
+	font-family: "Times New Roman", Times, serif;
+	
+}
 .center{
-  /*background-image: url("download.jpg");*/
-  background-size: 100px 800px; 
-  background-position: center; 
+  /* background-image: url("mediterranean-cuisine-2378758_1920.jpg"); */
+  background-image: url("salad-2068220_1920.jpg"); 
+  background-size: 1250px 1100px; 
+  /* background-position: center; */
   background-repeat: no-repeat;
   max-width: 500px;
   position: relative;
   left:300px;
-  top:200px;
+  top:30px;
 
 }
+#logo
+{
+  position: relative;
+  top: -20px;
+  right:440px;
 
+}
+#signIn
+{
+  color:white;
+}
 #signin
 {
 	position: relative; 
@@ -34,7 +51,7 @@
 }
 .row
 {
-	text-align: center;
+	text-align: center; 
 }
 .recipee
 {
@@ -52,9 +69,14 @@
 	border-top: 100px;
 	border-right:100px;
 }
+#header
+{
+	position: relative;
+	right:-350px;
+}
 .initsetup
 {
-	text-align: center;
+	text-align: left;
 }
 .slidecontainer
 {
@@ -108,7 +130,7 @@
 	position: absolute;
 	top:180px;
 	max-width: 500px;
-	left:400px;
+	left:440px;
 
 }
 #subalergy
@@ -122,9 +144,273 @@
 {
 	top:200px;
 	right:40px;
+	width: 100;
+	overflow-x: hidden;
+
 }
 #subInitSetUp
 {
-	left:400px;
+	position: relative;
+	left:-30px;
 	right:400px;
+}
+.Saved_recipe_pic
+{
+	padding:30px;
+	border-top: 100px;
+	border-right:100px;
+}
+#Food_Desription
+{
+	top:-250px;
+	left:350px;
+}
+.card
+{
+	width:600px;
+}
+#dropdownSavedRecipes
+{
+	position: relative;
+	left:1075px;
+	top:-50px;
+}
+/* Dropdown Button */
+.dropbtn {
+  background-color: #dc3545 /* <-- hex for danger color in bootstrap #f32a01 */ ;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #dc3545;}
+
+body {
+    font-family: 'Varela Round', sans-serif;
+}
+.modal-login {		
+    color: #636363;
+    /* color:#faf7f7; */
+    width: 350px;
+}
+.modal-login .modal-content {
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+}
+.modal-login .modal-header {
+    border-bottom: none;   
+    position: relative;
+    justify-content: center;
+}
+.modal-login h4 {
+    text-align: center;
+    font-size: 26px;
+    margin: 30px 0 -15px;
+}
+.modal-login .form-control:focus {
+    border-color: #70c5c0;
+}
+.modal-login .form-control, .modal-login .btn {
+    min-height: 40px;
+    border-radius: 3px; 
+}
+.modal-login .close {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+}	
+.modal-login .modal-footer {
+    background: #ecf0f1;
+    border-color: #dee4e7;
+    text-align: center;
+    justify-content: center;
+    margin: 0 -20px -20px;
+    border-radius: 5px;
+    font-size: 13px;
+}
+.modal-login .modal-footer a {
+    color: #999;
+}		
+.modal-login .avatar {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: -70px;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    z-index: 9;
+    background: #ffffff;
+    padding: 0px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+}
+.modal-login .avatar img {
+    width: 100%;
+}
+.modal-login.modal-dialog {
+    margin-top: 80px;
+}
+.modal-login .btn {
+    color: #fff;
+    border-radius: 4px;    
+    text-decoration: none;
+    transition: all 0.4s;
+    line-height: normal;
+    border: none;
+}
+.modal-login .btn:hover, .modal-login .btn:focus {
+    background: #45aba6;
+    outline: none;
+}
+.trigger-btn {
+    display: inline-block;
+    margin: 100px auto;
+}
+
+/* Style all input fields */
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+}
+
+/* Style the submit button */
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+}
+
+
+/* The message box is shown when the user clicks on the password field */
+#message {
+  display:none;
+  background: #f1f1f1;
+  color: #000;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+#message p {
+  padding: 10px 35px;
+  font-size: 18px;
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -35px;
+  content: '\2713';
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -35px;
+  content: '\00D7';
+}
+
+.carousel-caption
+{
+  position: relative;
+  color:white;
+  top:-510px;
+  left:-10px;
+  height:10px;
+ 
+}
+
+
+.carousel .item {
+  height: 400px;
+}
+
+.item img {
+    position: relative;
+    top: 0;
+    left: 0px;
+    
+}
+.carousel {
+  width:640px;
+  height:400px;
+  left:200px;
+}
+#mealPlan
+{
+  background-image: url("wood-2142217_1920.jpg");
+  background-size: 1250px 1100px; 
+}
+#mealplanButton
+{
+  position: relative;
+  top:-450px;
+  left:0px;
+  height: 60px;
+}
+.modal-header
+{
+  text-align: center;
+}
+/*
+#breakfastTitle
+{
+  position:relative;
+  left:160px;
+}
+#lunchTitle
+{
+  position:relative;
+  
+}
+#dinnerTitle
+{
+  position:relative;
+  left:160px;
 }
