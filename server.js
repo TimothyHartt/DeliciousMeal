@@ -548,9 +548,8 @@ app.post('/logout', (req, res) => {
 
 //Search algorithm
 app.post('/search', (req, res) => {
-    //INSERT SEARCH ALGORITHM HERE
 
-    var searchAlgorithm = 'funcs.searchFunctionBasic()'; //REPLACE WITH REAL ALGORITHM
+    var searchAlgorithm = 'SELECT recipeName, rating, totalTime, recipeID FROM recipes where soundex(recipeName) = soundex(?)';
     var recipes = [];
 
     connection.query(searchAlgorithm, (err, results) => {
