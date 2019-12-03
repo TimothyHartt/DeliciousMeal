@@ -53,6 +53,5 @@ module.exports = {
     getUnits,
     fractionToDecimal,
     decimalToFraction,
-    gcd,
-    searchFunctionBasic
+    gcd
 };
