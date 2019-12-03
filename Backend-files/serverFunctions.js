@@ -47,11 +47,20 @@ const gcd = (a, b) => {
     return b ? gcd(b, a % b) : a;
 }
 
+//search algorithm
+ 
+const searchFunctionBasic = function (searchString, numResults = 15) {
+	query = "SELECT recipeName, rating, totalTime, recipeID FROM recipes Order By DIFFERENCE(" + searchString + ", recipeName);";
+}
+
 //Export functions so they can be used elsewhere
 module.exports = {
     getCountries,
     getUnits,
     fractionToDecimal,
     decimalToFraction,
-    gcd
+    gcd,
+    searchFunctionBasic
 };
+
+
