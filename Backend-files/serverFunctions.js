@@ -48,9 +48,9 @@ const gcd = (a, b) => {
 }
 
 //search algorithm
- 
 const searchFunctionBasic = function (searchString, numResults = 15) {
 	query = "SELECT recipeName, rating, totalTime, recipeID FROM recipes Order By DIFFERENCE(" + searchString + ", recipeName);";
+	return query;
 }
 
 //Export functions so they can be used elsewhere
@@ -62,5 +62,3 @@ module.exports = {
     gcd,
     searchFunctionBasic
 };
-
-
