@@ -166,6 +166,10 @@ CREATE TABLE IF NOT EXISTS pantryItems(
     estimatedExpirationDate DATETIME
 );
 
+//Stores an image
+ALTER TABLE recipes
+ADD COLUMN image BLOB
+
 -- Add foreign key constraints after all tables are created to avoid conflicts
 -- This is necessary because every table has at least one dependency pointing to another table
 -- If we add foreign key definitions in the CREATE TABLE statement, we almost always reference a table that doesn't exist yet, which causes an error
