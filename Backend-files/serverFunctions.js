@@ -27,7 +27,7 @@ const fractionToDecimal = (fraction) => {
 
 //Convert a decimal to a fraction - based on https://gist.github.com/redteam-snippets/3934258
 const decimalToFraction = (decimal) => {
-    var top = decimal.replace(/\d*[.]/, ''); //Save just the part after the decimal
+    var top = decimal.toString().replace(/\d*[.]/, ''); //Save just the part after the decimal
     var bottom = Math.pow(10, top.length);
 
     if (decimal >= 1)
