@@ -15,11 +15,21 @@ head(style='margin:0px;')
  script(type='text/javascript' src='./Frontend-files/project.js')
 img#logo(src='Frontend-files/pictures/imageedit_10_4957959440.png' alt='logo' height='200' width='200')
 h1.h3.mb-3.font-weight-normal Please sign in
-form(action='http://127.0.0.1:5000/loginRequest' method='post')
-.form-group
-  input#Username.form-control(type='text' aria-describedby='username' placeholder='Username' required='' value=un)
-  input#Password.form-control(type='password' aria-describedby='password' placeholder='Password' required='')
-a.btn.btn-lg.btn-danger(type='submit' value='Submit') Sign in
+#LoginBox
+  form(action='http://127.0.0.1:5000/loginRequest' method='post')
+    fieldset
+      legend  Log In:
+      br
+      label(for='username') Username:
+      br
+      input(type='text' name='username' required='' value=un)
+      br
+      label(for='password') Password:
+      br
+      input(type='password' name='password' required='')
+      br
+      br
+      input(type='submit' value='Submit')
 a.btn.btn-lg.btn-info.btn-danger(href='#myModal' data-toggle='modal' onclick='openModal()') Register
 // Modal HTML
 #myModal.modal.fade
@@ -47,18 +57,18 @@ a.btn.btn-lg.btn-info.btn-danger(href='#myModal' data-toggle='modal' onclick='op
         #message(style='display:block')
           h3 Password must contain the following:
           p#letter.invalid
-            | A 
+            | A
             b lowercase
             |  letter
           p#capital.invalid
-            | A 
+            | A
             b capital (uppercase)
             |  letter
           p#number.invalid
-            | A 
+            | A
             b number
           p#length.invalid
-            | Minimum 
+            | Minimum
             b 8 characters
           p#match.invalid Password and Confirm Password Match
 br

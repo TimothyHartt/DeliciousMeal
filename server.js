@@ -60,7 +60,7 @@ app.get('/home', (req, res) => {
 
 //Login Page
 app.get('/login', (req, res) => {
-    res.render('loginExample');
+    res.render('login');
 });
 
 //Registration Page
@@ -202,7 +202,7 @@ app.get('/user/:name/myrecipes', (req, res) => {
                 }
                 //If the user has not submitted any recipes
                 else {
-                    res.render('myrecipes', {
+                    res.render('myrecipesExample', {
                         un: req.session.username,
                         recipes: recipeList
                     });
