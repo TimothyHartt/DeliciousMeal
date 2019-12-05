@@ -10,10 +10,10 @@
     position: fixed;
     width: 200px;
     height: 100%;
-    background: #FBFCFC;
+    background: rgb(204, 204, 204);
+    background: rgba(204, 204, 204, 0.5);
     left: -200px;
-    transition: all 500ms linear;
-  }
+    t
   #sidebar.active{
     left:0px;
   }
