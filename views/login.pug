@@ -18,7 +18,7 @@ h1.h3.mb-3.font-weight-normal Please sign in
 #LoginBox
   form(action='http://127.0.0.1:5000/loginRequest' method='post')
     fieldset
-      legend  Log In:
+      legend Log In:
       br
       label(for='username') Username:
       br
@@ -30,6 +30,8 @@ h1.h3.mb-3.font-weight-normal Please sign in
       br
       br
       input(type='submit' value='Submit')
+if (err)
+  h4 #{err}
 a.btn.btn-lg.btn-info.btn-danger(href='#myModal' data-toggle='modal' onclick='openModal()') Register
 // Modal HTML
 #myModal.modal.fade
@@ -74,18 +76,18 @@ a.btn.btn-lg.btn-info.btn-danger(href='#myModal' data-toggle='modal' onclick='op
         #message(style='display:block')
           h3 Password must contain the following:
           p#letter.invalid
-            | A
+            | A 
             b lowercase
             |  letter
           p#capital.invalid
-            | A
+            | A 
             b capital (uppercase)
             |  letter
           p#number.invalid
-            | A
+            | A 
             b number
           p#length.invalid
-            | Minimum
+            | Minimum 
             b 8 characters
           p#match.invalid Password and Confirm Password Match
 br
