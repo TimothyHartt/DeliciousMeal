@@ -343,3 +343,10 @@ VALUES ('soy milk', 'dairy', 35, 0, 0, 5, 0);
 
 INSERT INTO ingredientnutritionindexes (ingredient, servingSize, calories, totalFat, caloriesFromFat, saturatedFat, transFat, cholesterol, omega3s, sodium, totalCarbs, dietaryFiber, sugars, protein, vitaminA, vitaminC, calcium, iron, magnesium, potassium, zinc)
 VALUES (1, 126, 112, 0.4, 3.5, 0.1, 0, 0, 34, 1.3, 28.8, 3.3, 15.4, 1.4, 2, 18, 1, 2, 9, 13, 1);
+
+-- ADD RECIPES
+INSERT INTO recipes (recipeID, recipeName, instructions, author, descriptionText, prepTime, cookTime, yield, difficulty, meal, uploadDate)
+VALUES (40, 'Mac N Cheese', 'JDKfjkldsa', 4, 'fdsafds;jkalf', 5, 5, 2, 'easy', 'dinner', SYSDATE());
+
+
+
