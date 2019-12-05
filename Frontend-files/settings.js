@@ -3,5 +3,5 @@ let toggleButton = document.querySelector('.toggle-button')
 
 toggleButton.addEventListener('click', (e) => {
   e.preventDefault();
-  container.classList.toggle('show-nav');  
+  container.classList.toggle('show-nav');
 });

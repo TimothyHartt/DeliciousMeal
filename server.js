@@ -356,7 +356,7 @@ app.get('/recipe/:recipeid/reviews', (req, res) => {
 });
 
 //Let the user add a new recipe with ingredients
-app.get('/addrecipe', (req, res) => {
+app.get('/addRecipe', (req, res) => {
 
     //Only let people add recipes while logged in
     if (req.session.loggedin) {
@@ -372,7 +372,7 @@ app.get('/addrecipe', (req, res) => {
 
             req.session.ingredientList = ingredients; //Store ingredients in a local session variable
 
-            res.render('addrecipe', {
+            res.render('addRecipeExample', {
                 countryList: funcs.getCountries(),
                 ing: ingredients,
                 units: funcs.getUnits()
@@ -554,9 +554,9 @@ app.post('/search', (req, res) => {
 
     connection.query(searchAlgorithm, [req.body.searchText], (err, results) => {
         if (err) throw err;
-        
+
         if (results.length > 0) {
-            
+
             var data = [];
             for (i = 0; i < results.length; i++) {
                 data = [];
@@ -564,7 +564,7 @@ app.post('/search', (req, res) => {
                 data.push(results[i].recipeName);
                 recipes.push(data);
             }
-            
+
             res.render('searchresultsExample', {
                 results: recipes
             });
@@ -631,7 +631,7 @@ app.post('/submitRecipe', (req, res) => {
     //Try again if they gave invalid input
     else {
         quantity = 0;
-        res.render('addrecipe', {
+        res.render('addRecipeExample', {
             err: 'Please enter a valid quantity. Fractions should be in the form "x/y".',
             countryList: funcs.getCountries(),
             ing: req.session.ingredientList,
