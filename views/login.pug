@@ -1,0 +1,66 @@
+doctype html
+// No Updates Necessary!
+head(style='margin:0px;')
+ meta(charset='utf-8')
+ meta(http-equiv='X-UA-Compatible' content='IE=edge')
+ meta(name='viewport' content='width=device-width, initial-scale=1')
+ link(href='https://fonts.googleapis.com/css?family=Roboto|Varela+Round' rel='stylesheet')
+ link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+ link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+ script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+ script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+ title Login Page
+ // Custom styles for this template
+ link(rel='stylesheet' type='text/css' href='Frontend-files/login.css')
+ script(type='text/javascript' src='./Frontend-files/project.js')
+img#logo(src='Frontend-files/pictures/imageedit_10_4957959440.png' alt='logo' height='200' width='200')
+h1.h3.mb-3.font-weight-normal Please sign in
+form(action='http://127.0.0.1:5000/loginRequest' method='post')
+.form-group
+  input#Username.form-control(type='text' aria-describedby='username' placeholder='Username' required='' value=un)
+  input#Password.form-control(type='password' aria-describedby='password' placeholder='Password' required='')
+a.btn.btn-lg.btn-danger(type='submit' value='Submit') Sign in
+a.btn.btn-lg.btn-info.btn-danger(href='#myModal' data-toggle='modal' onclick='openModal()') Register
+// Modal HTML
+#myModal.modal.fade
+  .modal-dialog.modal-login
+    .modal-content
+      .modal-header
+        .avatar
+          img(src='https://www.tutorialrepublic.com/examples/images/avatar.png' alt='Avatar')
+        h4.modal-title Sign Up page
+        button.close(type='button' data-dismiss='modal' aria-hidden='true') &times;
+      .modal-body
+        .form-group
+          input.form-control(type='text' name='firstName' placeholder='First Name' required='required')
+        .form-group
+          input.form-control(type='text' name='lastName' placeholder='Last Name' required='required')
+        .form-group
+          input.form-control(type='text' name='email' placeholder='email' required='required')
+        .form-group
+          input#psw.form-control(type='password' name='password' placeholder='Password' required='required')
+        .form-group
+          input#cpsw.form-control(type='password' name='confirm password' placeholder='Confirm Password' required='required')
+        .form-group
+          button#my_submit_button.btn.btn-primary.btn-block.login-btn(disabled='' onclick='onClickFunction()') Sign Up
+      .modal-footer
+        #message(style='display:block')
+          h3 Password must contain the following:
+          p#letter.invalid
+            | A 
+            b lowercase
+            |  letter
+          p#capital.invalid
+            | A 
+            b capital (uppercase)
+            |  letter
+          p#number.invalid
+            | A 
+            b number
+          p#length.invalid
+            | Minimum 
+            b 8 characters
+          p#match.invalid Password and Confirm Password Match
+br
+br
+br
