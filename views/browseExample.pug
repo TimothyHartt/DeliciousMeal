@@ -1,0 +1,13 @@
+doctype html
+head
+ meta(charset='utf-8')
+ title Browse Recipes
+h2 Browse Recipes
+ul
+ - var link
+ - var name
+ each id, index in ids
+  - link = 'http://127.0.0.1:5000/recipe/' + id;
+  - name = names[index];
+  li
+   a(href=link) #{name}
