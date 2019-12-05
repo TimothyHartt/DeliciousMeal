@@ -34,13 +34,9 @@
     background: #151719;
     margin: 5px 0px;
   }
-  .container.jumbotron {
-    position:relative;
-    z-index:2;
-  }
   .jumbotron{
-    opacity: 0.7;
-    overflow: hidden;
+    background: rgb(204, 204, 204);
+    background: rgba(204, 204, 204, 0.5);
   }
 
   body{
