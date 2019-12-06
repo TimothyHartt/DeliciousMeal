@@ -21,6 +21,7 @@ var dbOptions = {
     host: 'localhost',
     user: 'root',
     password: 'password123',
+    password: '',
     database: 'deliciousmeal',
     clearExpired: true, //Remove expired sessions from the database
     checkExpirationInterval: 86400000, //Check for and delete expired sessions every 24 hours
@@ -52,7 +53,7 @@ app.use(session({
 
 //Home Page
 app.get('/home', (req, res) => {
-    res.render('homeExample', {
+    res.render('home', {
         un: req.session.username,
         li: req.session.loggedin
     });
@@ -66,6 +67,31 @@ app.get('/login', (req, res) => {
 //Registration Page
 app.get('/register', (req, res) => {
     res.render('registrationExample');
+});
+
+//Browse Recipes (Incomplete - just gets the 10 latest recipes)
+app.get('/browse', (req, res) => {
+
+    //Grab the 10 most recent recipes - Change later
+    var query = 'SELECT recipeID, recipeName FROM recipes ORDER BY uploadDate DESC LIMIT 10';
+
+    connection.query(query, (err, results) => {
+        if (err) throw err;
+
+        var recipeIDs = [];
+        var recipeNames = [];
+
+        //Store all the recipe IDs and names
+        for (i = 0; i < results.length; i++) {
+            recipeIDs.push(results[i].recipeID);
+            recipeNames.push(results[i].recipeName);
+        }
+
+        res.render('browseExample', {
+            ids: recipeIDs,
+            names: recipeNames
+        });
+    });
 });
 
 //User Profile Page
@@ -88,7 +114,7 @@ app.get('/user/:name/initialsetup', (req, res) => {
 
     //Make sure the user is logged in and trying to access their own page
     if (req.params.name === req.session.username) {
-        res.render('initialsetup', {
+        res.render('initialsetupExample', {
             un: req.session.username
         });
     }
@@ -193,7 +219,7 @@ app.get('/user/:name/myrecipes', (req, res) => {
                         }
 
                         //Load the page, passing in the ids and names of each recipe
-                        res.render('myrecipes', {
+                        res.render('myrecipesExample', {
                             un: req.session.username,
                             recipes: recipeList,
                             names: recipeNames
@@ -208,6 +234,25 @@ app.get('/user/:name/myrecipes', (req, res) => {
                     });
                 }
             });
+        });
+    }
+    else {
+        res.send("You must be logged in as that user");
+    }
+});
+
+//User meal plan (INCOMPLETE)
+app.get('/user/:name/mealplanning', (req, res) => {
+
+    //Make sure the user is logged in and trying to access their own profile
+    if (req.params.name === req.session.username) {
+
+        //Determine a recommendation for each meal
+        var recs = [];
+
+        //Load the page, passing in the reccomendations
+        res.render('mealplanning', {
+            un: req.session.username
         });
     }
     else {
@@ -287,7 +332,7 @@ app.get('/recipe/:recipeid', (req, res) => {
 
                     function showRecipe() {
                         //Show the page, including the ingredient data we collected
-                        res.render('recipe', {
+                        res.render('recipeExample', {
                             ingredientList: ingredientData,
                             name: recipe.recipeName,
                             instructions: recipe.instructions,
@@ -343,7 +388,7 @@ app.get('/recipe/:recipeid/reviews', (req, res) => {
                 }
 
                 //Load the page and pass in the list of reviews as a JSON
-                res.render('reviews', {
+                res.render('reviewsExample', {
                     un: req.session.username,
                     reviews: reviewList
                 });
@@ -386,22 +431,18 @@ app.get('/addRecipe', (req, res) => {
     }
 });
 
-
-
 app.get('/addIngredient', (req,res) =>{
   if(req.session.loggedin){
-    res.render('addIngredient', {
+    res.render('addIngredientExample', {
 
     });
   }else{
-    res.render('addIngredient', {
+    res.render('addIngredientExample', {
         err: 'Please log in to add a new Ingredient'
     });
   }
 
 });
-
-
 
 // ------------------------------- //
 
@@ -419,7 +460,7 @@ app.post('/loginRequest', (req, res) => {
 
     //If user logged in elsewhere
     if (onlineUsers.includes(username)) {
-        res.render('loginExample', {
+        res.render('login', {
             err: 'User already logged in',
             un: username
         });
@@ -451,7 +492,7 @@ app.post('/loginRequest', (req, res) => {
                 }
                 //If not, go back to the login page to try again
                 else {
-                    res.render('loginExample', {
+                    res.render('login', {
                         err: 'Incorrect password',
                         un: username
                     });
@@ -460,7 +501,7 @@ app.post('/loginRequest', (req, res) => {
             }
             //If username not found, go back to the login page
             else {
-                res.render('loginExample', {
+                res.render('login', {
                     err: 'Username not found',
                     un: username
                 });
@@ -565,12 +606,12 @@ app.post('/search', (req, res) => {
                 recipes.push(data);
             }
 
-            res.render('searchresultsExample', {
+            res.render('searchresults', {
                 results: recipes
             });
         }
         else {
-            res.render('searchresultsExample', {
+            res.render('searchresults', {
                 err: 'No results found'
             });
         }
