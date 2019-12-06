@@ -3,9 +3,13 @@ head
  meta(charset='utf-8')
  title Search Results
  link(rel='stylesheet' href='http://127.0.0.1:5000/Frontend-files/myStyle.css')
-
 h1 Search Results
-ul
- each val in results
-  li
-   a(href='http://127.0.0.1:5000/recipe/' + val[0]) #{val[1]}
+if (err)
+ p #{err}
+else
+ ul
+  each val in results
+   li
+    a(href='http://127.0.0.1:5000/recipe/' + val[0]) #{val[1]}
+br
+a(href='http://127.0.0.1:5000/home') Go back

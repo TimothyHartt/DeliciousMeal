@@ -1,24 +1,40 @@
 doctype html
 head
-  script(src='https://kit.fontawesome.com/a076d05399.js')
-  meta(charset='utf-8')
-  title DeliciousMeal
-  link(rel='stylesheet' href='s.css')
+ script(src='https://kit.fontawesome.com/a076d05399.js')
+ meta(charset='utf-8')
+ title DeliciousMeal
+ link(rel='stylesheet' href='Frontend-files/Home/s.css')
 input#check(type='checkbox')
 label(for='check')
-  i#btn.fas.fa-bars
-  i#cancel.fas.fa-times
+ i#btn.fas.fa-bars
+ i#cancel.fas.fa-times
 .sidebar
-  header Home
+ - var headerName = li ? un : 'Home'
+ header #{headerName}
+ if (li)
   ul
-    li
-      a(href='login.html') Login
-    li
-      a(href='home.html') Home
-    li
-      a(href='mealPlaning.html') Meal Planning
-    li
-      a(href='savedRecipes.html') Saved Recipies
-    li
-      a(href='initialsetup.html') Register
+   li
+    a(href='http://127.0.0.1:5000/user/' + un + '/mealplanning') #[strong Meal Planning]
+   li
+    a(href='http://127.0.0.1:5000/browse') #[strong Browse Recipes]
+   li
+    a(href='http://127.0.0.1:5000/user/' + un + '/favorites') #[strong Saved Recipes]
+   li
+    a(href='http://127.0.0.1:5000/user/' + un + '/myrecipes') #[strong Submitted Recipes]
+   li
+    a(href='http://127.0.0.1:5000/addrecipe') #[strong Add a recipe]
+   li
+    form(action='http://127.0.0.1:5000/logout' method='POST')
+     input#logOutButton(type='submit' value='Log Out')
+ else
+  ul
+   li
+    a(href='http://127.0.0.1:5000/login') #[strong Login / Register]
 section
+ #searchBar
+  form(action='http://127.0.0.1:5000/search' method='post')
+   label#searchLabel(for='searchText') Search for recipes:
+   br
+   input#searchBox(type='text' name='searchText')
+   br
+   input#searchSubmit(type='submit' value='Search')
