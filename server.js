@@ -590,10 +590,10 @@ app.post('/logout', (req, res) => {
 //Search algorithm
 app.post('/search', (req, res) => {
 
-    var searchAlgorithm = `SELECT recipeName, rating, totalTime, recipeID FROM recipes WHERE substring(soundex(recipeName),2) LIKE concat('%', substring(soundex(?),2), '%')`;
+    var searchAlgorithm = `SELECT recipeName, rating, totalTime, recipeID FROM recipes WHERE soundex(recipeName) LIKE concat('%', substring(soundex(?),2), '%') or recipeName LIKE concat('%',?,'%')`;
     var recipes = [];
 
-    connection.query(searchAlgorithm, [req.body.searchText], (err, results) => {
+    connection.query(searchAlgorithm, [req.body.searchText, req.body.searchText], (err, results) => {
         if (err) throw err;
 
         if (results.length > 0) {
