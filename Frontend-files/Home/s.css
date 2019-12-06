@@ -20,7 +20,8 @@
   font-size: 22px;
   color: black;
   line-height: 70px;
-  text-align: center;
+  text-align: left;
+  padding-left: 40px;
   background: url(bg.jpg) no-repeat;
   user-select: none;
 }
@@ -87,6 +88,46 @@ section{
   background: url(bg.jpg) no-repeat;
   background-position: center;
   background-size: cover;
-  height: 100vh;
+  height: 135vh;
   transition: all .5s;
+}
+
+#searchBar {
+  position: relative;
+  top: 10%;
+  left: 35%;
+}
+
+#logOutButton {
+    position: relative;
+    top: 40px;
+    left: 85px;
+    height: 40px;
+    width: 80px;
+    font-size: 22px;
+    text-align: center;
+}
+
+#searchLabel {
+    position: relative;
+    margin: auto;
+    color: black;
+}
+
+#searchBox{
+    width: 450px;
+    /*height: 40px;
+    right: 20px;*/
+    margin: auto;
+    font-size: 22px;
+    border-radius: 15px;
+    border-color: black;
+    border: 1px solid;
+}
+
+#searchSubmit{
+    /*position: relative;
+    top: 50px;
+    left: 100px;*/
+    margin: auto;
 }

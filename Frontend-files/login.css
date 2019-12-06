@@ -39,10 +39,14 @@ body
   margin: auto;
 }
 #username{
-  position: relative; 
   text-align: left;
   max-width: 500px;
-  margin: 10px;
+  margin: auto;
+}
+#password {
+  text-align: left;
+  max-width: 500px;
+  margin: auto;
 }
 .btn
 {

@@ -20,7 +20,11 @@ app.set('view engine', 'pug'); //Use PUG for dynamic HTML
 var dbOptions = {
     host: 'localhost',
     user: 'root',
+<<<<<<< HEAD
     password: 'password123',
+=======
+    password: '',
+>>>>>>> 4d25cb2b71d7646f8693b060b132b2acf8d019a3
     database: 'deliciousmeal',
     clearExpired: true, //Remove expired sessions from the database
     checkExpirationInterval: 86400000, //Check for and delete expired sessions every 24 hours
@@ -409,6 +413,7 @@ app.get('/addRecipe', (req, res) => {
         var ingredients = [];
         var inQuery = 'SELECT * FROM ingredients';
         connection.query(inQuery, (err, results) => {
+            if (err) throw err;
 
             for (i = 0; i < results.length; i++) {
                 ingredients.push(results[i].ingredientName);
@@ -424,7 +429,7 @@ app.get('/addRecipe', (req, res) => {
         });
     }
     else {
-        res.render('loginExample', {
+        res.render('login', {
             err: 'Please log in to add a new recipe'
         });
     }
@@ -649,13 +654,13 @@ app.post('/submitRecipe', (req, res) => {
     var meal = req.body.meal;
     var country = req.body.country;
 
-    var ingredient = req.body.ingredient;
-    var quantity = req.body.quantity;
-    var unit = req.body.unit;
+    //var ingredient = req.body.ingredient;
+    //var quantity = req.body.quantity;
+    //var unit = req.body.unit;
 
     var totalTime = parseInt(prepTime) + parseInt(cookTime);
 
-    //Convert the quantity to a decimal
+    /*//Convert the quantity to a decimal
     var intPattern = /^\d{1,3}$/;
     var floatPattern = /^\d{1,3}\.\d{1,3}$/;
     var fractionPattern = /^[1-9]\/[1-9]$/;
@@ -684,7 +689,7 @@ app.post('/submitRecipe', (req, res) => {
             srv: servings
         });
         return;
-    }
+    }*/
 
     //Get the user's ID based on their username
     var idQuery = 'SELECT userID FROM users WHERE username = ?';
@@ -711,8 +716,11 @@ app.post('/submitRecipe', (req, res) => {
                 if (err) throw err;
                 var recipeid = results[0].recipeID;
 
+                //Go to the new recipe page (TEMP)
+                res.redirect('recipe/' + recipeid);
+
                 //If they included ingredients
-                if (ingredient != '') {
+                /*if (ingredient != '') {
                     //Get the id for the ingredient we added
                     var ingredientQuery = 'SELECT ingredientID FROM ingredients WHERE ingredientName = ?';
                     connection.query(ingredientQuery, [ingredient], (err, results) => {
@@ -720,7 +728,7 @@ app.post('/submitRecipe', (req, res) => {
                         var ingredientID = results[0].ingredientID;
 
                         //Add a new recipe ingredient
-                        var ingredientInsertQuery = 'INSERT INTO recipeIngredients(recipe, ingredient, quantity, measurementUnit) VALUES(?, ?, ?, ?)';
+                        /*var ingredientInsertQuery = 'INSERT INTO recipeIngredients(recipe, ingredient, quantity, measurementUnit) VALUES(?, ?, ?, ?)';
                         connection.query(ingredientInsertQuery, [recipeid, ingredientID, quantity, unit], (err) => {
                             if (err) throw err;
 
@@ -732,7 +740,7 @@ app.post('/submitRecipe', (req, res) => {
                 //If they didn't include ingredients
                 else {
                     res.redirect('recipe/' + recipeid);
-                }
+                }*/
             });
         });
     });
