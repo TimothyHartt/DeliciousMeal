@@ -1,0 +1,153 @@
+doctype html
+head
+  meta(charset='utf-8')
+  meta(name='description' content='')
+  title Meal Planning
+  // Bootstrap core CSS
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+  script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
+  // Custom styles for this template
+  link(rel='stylesheet' type='text/css' href='Frontend-files/Home/s.css')
+input#check(type='checkbox')
+label(for='check')
+  i#btn.fas.fa-bars
+  i#cancel.fas.fa-times
+.sidebar
+  - var headerName = li ? un : 'Home'
+  header #{headerName}
+  if (li)
+    ul
+      li
+        a(href='http://127.0.0.1:5000/user/' + un + '/mealplanning') #[strong Meal Planning]
+      li
+        a(href='http://127.0.0.1:5000/browse') #[strong Browse Recipes]
+      li
+        a(href='http://127.0.0.1:5000/user/' + un + '/favorites') #[strong Saved Recipes]
+      li
+        a(href='http://127.0.0.1:5000/user/' + un + '/myrecipes') #[strong Submitted Recipes]
+      li
+        a(href='http://127.0.0.1:5000/addrecipe') #[strong Add a recipe]
+      li
+        form(action='http://127.0.0.1:5000/logout' method='POST')
+          input#logOutButton(type='submit' value='Log Out')
+  else
+    ul
+      li
+        a(href='http://127.0.0.1:5000/login') #[strong Login / Register]
+section
+br
+br
+#myCarousel.carousel.slide.carousel-fade(data-ride='carousel')
+  ol.carousel-indicators
+    li.active(data-target='#myCarousel' data-slide-to='0')
+    li(data-target='#myCarousel' data-slide-to='1')
+    li(data-target='#myCarousel' data-slide-to='2')
+  .carousel-inner
+    .item.active
+      img(src='breakfast-1209260_1920.jpg' alt='Breakfast' style='width:100%;')
+      button#mealplanButton.btn.btn-dark.btn-sm(type='button' href='#modal fade')
+        h3
+          b Breakfast
+          h3
+      .carousel-caption
+        button#seeRecipes.btn.btn-dark(type='button' data-toggle='modal' data-target='#breakfastModal')
+          | Acai Bowl
+    .item
+      img(src='sandwich-4638226_1920.jpg' alt='Lunch' style='width:100%;')
+      button#mealplanButton.btn.btn-dark(type='button' href='#modal fade' data-toggle='modal' data-target='#exampleModalLong')
+        h3
+          b Lunch
+          h3
+      .carousel-caption
+        button#seeRecipes.btn.btn-dark(type='button' data-toggle='modal' data-target='#lunchModal')
+          | Club Sandwich
+    .item
+      img(src='prawn-441623_1920.jpg' alt='Dinner' style='width:100%;')
+      button#mealplanButton.btn.btn-dark(type='button' href='#modal fade' data-toggle='modal' data-target='#exampleModalLong')
+        h3
+          b Dinner
+          h3
+      .carousel-caption
+        button#seeRecipes.btn.btn-dark(type='button' data-toggle='modal' data-target='#dinnerModal')
+          | Shrimp Scampi
+  a.left.carousel-control(href='#myCarousel' data-slide='prev')
+    span.glyphicon.glyphicon-chevron-left
+    span.sr-only Previous
+  a.right.carousel-control(href='#myCarousel' data-slide='next')
+    span.glyphicon.glyphicon-chevron-right
+    span.sr-only Next
+// Modal for Breakfast
+#breakfastModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered(role='document')
+    .modal-content
+      .modal-header
+        h1#breakfastTitle.modal-title Acai Bowl
+        button.close(type='button' data-dismiss='modal' aria-label='Close')
+          span(aria-hidden='true') &times;
+      .modal-body
+        img(src='breakfast-1209260_1920.jpg' alt='Breakfast' style='width:100%;')
+        br
+        br
+        p  Recipe: 
+        ol
+          li  Fill a medium sized bowl with 3 cups of acai juice 
+          li  Add 2 cups of granola
+          li  Add 1 cup of almonds
+          li  Cut up six stawberries and add them to the bowl
+          li  Cut up half a Bananna and add it to the bowl
+          li  Add a handful of blackberries
+          li  Sprinkle coconut shavings over the top
+      .modal-footer
+        button.btn.btn-primary(type='button') Save Recipe
+        button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+// Modal for Lunch
+#lunchModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered(role='document')
+    .modal-content
+      .modal-header
+        h1#lunchTitle.modal-title Club Sandwhich
+        button.close(type='button' data-dismiss='modal' aria-label='Close')
+          span(aria-hidden='true') &times;
+      .modal-body
+        img(src='sandwich-4638226_1920.jpg' alt='Lunch' style='width:100%;')
+        br
+        br
+        p  Recipe: 
+        ol
+          li  Fill a medium sized bowl with 3 cups of acai juice 
+          li  Add 2 cups of granola
+          li  Add 1 cup of almonds
+          li  Cut up six stawberries and add them to the bowl
+          li  Cut up half a Bananna and add it to the bowl
+          li  Add a handful of blackberries
+          li  Sprinkle coconut shavings over the top
+      .modal-footer
+        button.btn.btn-primary(type='button') Save Recipe
+        button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+// Modal for Dinner
+#dinnerModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered(role='document')
+    .modal-content
+      .modal-header
+        h1#dinnerTitle.modal-title  Shrimp Scampi
+        button.close(type='button' data-dismiss='modal' aria-label='Close')
+          span(aria-hidden='true') &times;
+      .modal-body
+        img(src='prawn-441623_1920.jpg' alt='Dinner' style='width:100%;')
+        br
+        br
+        p  Recipe: 
+        ol
+          li  Fill a medium sized bowl with 3 cups of acai juice 
+          li  Add 2 cups of granola
+          li  Add 1 cup of almonds
+          li  Cut up six stawberries and add them to the bowl
+          li  Cut up half a Bananna and add it to the bowl
+          li  Add a handful of blackberries
+          li  Sprinkle coconut shavings over the top
+      .modal-footer
+        button.btn.btn-primary(type='button') Save Recipe
+        button.btn.btn-secondary(type='button' data-dismiss='modal') Close
