@@ -72,7 +72,7 @@ app.get('/register', (req, res) => {
 app.get('/browse', (req, res) => {
 
     //Grab the 10 most recent recipes - Change later
-    var query = 'SELECT recipeID, recipeName FROM recipes ORDER BY uploadDate DESC LIMIT 10';
+    var query = 'SELECT recipeID, recipeName FROM recipes ORDER BY uploadDate DESC';
 
     connection.query(query, (err, results) => {
         if (err) throw err;
