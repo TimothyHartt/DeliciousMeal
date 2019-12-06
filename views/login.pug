@@ -11,28 +11,28 @@ head(style='margin:0px;')
  script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
  title Login Page
  // Custom styles for this template
- link(rel='stylesheet' type='text/css' href='Frontend-files/login.css')
+ link(rel='stylesheet' type='text/css' href='.Frontend-files/login.css')
  script(type='text/javascript' src='Frontend-files/project.js')
 img#logo(src='Frontend-files/pictures/imageedit_10_4957959440.png' alt='logo' height='200' width='200')
 h1.h3.mb-3.font-weight-normal Please sign in
 #LoginBox
   form(action='http://127.0.0.1:5000/loginRequest' method='post')
     fieldset
-      legend Log In:
       br
       label(for='username') Username:
       br
-      input(type='text' name='username' required='' value=un)
+      input#Username.form-control(type='text' aria-describedby='username' required='' value=un)
       br
       label(for='password') Password:
       br
-      input(type='password' name='password' required='')
+      input#Password.form-control(type='password' aria-describedby='password' required='')
       br
       br
-      input(type='submit' value='Submit')
+      button.btn-lg.btn-danger(type='submit' value='Submit') Submit
+a.btn.btn-lg.btn-info.btn-danger(href='#myModal' data-toggle='modal' onclick='openModal()') Register
+br
 if (err)
   h4 #{err}
-a.btn.btn-lg.btn-info.btn-danger(href='#myModal' data-toggle='modal' onclick='openModal()') Register
 // Modal HTML
 #myModal.modal.fade
   .modal-dialog.modal-login
