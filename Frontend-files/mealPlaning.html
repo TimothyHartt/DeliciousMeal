@@ -13,32 +13,26 @@
 
     		<!-- Custom styles for this template -->
     		<link rel="stylesheet" type = "text/css"  href="login.css"/> 
+    		
 		</head>
 		<body id="mealPlan">
-		<nav class="navbar navbar-expand-lg navbar-light">
-		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		  </button>
-		  <div class="collapse navbar-collapse" id="navbarText">
-			<ul class="navbar-nav mr-auto">
-			  <li class="nav-item">
-				<a class="nav-link" href="home.html">Home</a>
-			  </li>
-			  <li class="nav-item active ">
-				<a class="nav-link" href="register.html">Meal Planning</a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="savedRecipes.html">Saved Recipes </a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="player_info.html">Settings</a>
-			  </li>
-			</ul>
-			<div class="form-inline my-2 my-lg-0">
-				<a class="btn btn-outline-dark my-2 my-sm-0" href="login.html" type="submit">Logout</a>
+			   <input type="checkbox" id="check">
+			    <label for="check">
+			      <i class="fas fa-bars" id="btn"></i>
+			      <i class="fas fa-times" id="cancel"></i>
+			    </label>
+			    <div class="sidebar">
+			      <header>Home</i></header>
+			  <ul>
+			    <li><a href="login.html">Login</a></li>
+			    <li><a href="home.html">Home</a></li>
+			    <li><a href="mealPlaning.html">Meal Planning</a></li>
+			    <li><a href="savedRecipes.html">Saved Recipies</a></li>
+			    <li><a href="initialsetup.html">Register</a></li>
+			  </ul>
 			</div>
-	  	  </div>
-		</nav>
+			 <section></section>
+
 		<br>
 		<br>
 		  <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
@@ -59,8 +53,8 @@
 				  <h3><b>Breakfast</b><h3>
 				</button>
 		        <div class="carousel-caption">
-		        	<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#breakfastModal" id="savedRecipes">
-  						See Recipe!
+		        	<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#breakfastModal" id="seeRecipes">
+  						Acai Bowl
 					</button>
 		        </div>
 		      </div>
@@ -71,8 +65,8 @@
 				  <h3><b>Lunch</b><h3>
 				</button>
 		        <div class="carousel-caption">
-		        	<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#lunchModal" id="savedRecipes">
-  						See Recipe!
+		        	<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#lunchModal" id="seeRecipes">
+  						Club Sandwhich
 					</button>
 		        </div>
 		      </div>
@@ -83,8 +77,8 @@
 				  <h3><b>Dinner</b><h3>
 				</button>
 		        <div class="carousel-caption">
-		        	<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#dinnerModal" id="savedRecipes">
-  						See Recipe!
+		        	<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#dinnerModal" id="seeRecipes">
+  						Shrimp Scampi
 					</button>
 		        </div>
 		      </div>
@@ -202,87 +196,3 @@
 
 		</body>
 	</html>
-
-	<!--
-		<!DOCTYPE html>
-	<html>
-		<head>
-			<meta charset="utf-8">
-    		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    		<meta name="description" content="">
-    		<title>Meal Planning</title>
-    	
-			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    		<link rel="stylesheet" type = "text/css"  href="login.css"/> 
-		</head>
-		<body>
-		<nav class="navbar navbar-expand-lg navbar-light bg-danger"
-	  		<a class="navbar-brand" href="home.html">
-				<img class="rounded-circle" src="../resources/img/cu_boulder_logo.jpg" alt="" width="30" height="30">
-	  		</a>
-		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		  </button>
-		  <div class="collapse navbar-collapse" id="navbarText">
-			<ul class="navbar-nav mr-auto">
-			  <li class="nav-item">
-				<a class="nav-link" href="home.html">Home</a>
-			  </li>
-			  <li class="nav-item active ">
-				<a class="nav-link" href="register.html">Meal Planning</a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="team_stats.html">Saved Recipes <span class="sr-only">(current)</span></a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="player_info.html">Settings</a>
-			  </li>
-			</ul>
-			<div class="form-inline my-2 my-lg-0">
-				<a class="btn btn-outline-dark my-2 my-sm-0" href="login.html" type="submit">Logout</a>
-			</div>
-	  	  </div>
-		</nav>
-		<br>
-		<br>
-		<div class="row"  style="margin:30px;">
-  			<div class="col-6 col-md-4">
-  				<h1> <u>Breakfast</u> </h1>
-  				<br>
-  				<div class="card" style="width: 21rem;">
-  					<a href="recipe.html">
-	  					<img class="card-img-top" src="download.jpg" alt="Smiley face" height="300" width="300">
-	  					<div class="card-body">
-	    					<p class="card-text">Funny Face Eggs</p>
-	  					</div>
-	  				</a>
-				</div>
-  			</div>
-  			<div class="col-6 col-md-4">
-  				<h1> <u> Lunch </u> </h1>
-  				<br>
-  				<div class="card" style="width: 21rem;">
-	  				<a href="recipe.html">
-	  					<img class="card-img-top" src="download-1.jpg" alt="Smiley face" height="300" width="300">
-		  					<div class="card-body">
-		    					<p class="card-text">BLT and Fries</p>
-		  					</div>
-	  				</a>
-	  			</div>
-  			</div>
-  			<div class="col-6 col-md-4">
-  			  	<h1> <u>Dinner</u> </h1>
-  			  	<br>
-  				<div class="card" style="width: 21rem;">
-	  				<a href="recipe.html">
-	  					<img class="card-img-top" src="download-2.jpg" alt="Smiley face" height="300" width="300">
-		  					<div class="card-body">
-		    					<p class="card-text">Chicken and Rice</p>
-		  					</div>
-	  				</a>
-	  			</div>
-  			</div>
-		</div>
-		</body>
-	</html>
--->
