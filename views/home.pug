@@ -14,9 +14,9 @@ label(for='check')
  if (li)
   ul
    li
-    a(href='http://127.0.0.1:5000/user/' + un + '/mealplanning') #[strong Meal Planning]
-   li
     a(href='http://127.0.0.1:5000/browse') #[strong Browse Recipes]
+   li
+    a(href='http://127.0.0.1:5000/user/' + un + '/mealplanning') #[strong Meal Planning]
    li
     a(href='http://127.0.0.1:5000/user/' + un + '/favorites') #[strong Saved Recipes]
    li
@@ -28,6 +28,8 @@ label(for='check')
      input#logOutButton(type='submit' value='Log Out')
  else
   ul
+   li
+    a(href='http://127.0.0.1:5000/browse') #[strong Browse Recipes]
    li
     a(href='http://127.0.0.1:5000/login') #[strong Login / Register]
 section
