@@ -20,11 +20,7 @@ app.set('view engine', 'pug'); //Use PUG for dynamic HTML
 var dbOptions = {
     host: 'localhost',
     user: 'root',
-<<<<<<< HEAD
-    password: 'password123',
-=======
     password: '',
->>>>>>> 4d25cb2b71d7646f8693b060b132b2acf8d019a3
     database: 'deliciousmeal',
     clearExpired: true, //Remove expired sessions from the database
     checkExpirationInterval: 86400000, //Check for and delete expired sessions every 24 hours
