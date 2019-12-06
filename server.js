@@ -594,7 +594,7 @@ app.post('/logout', (req, res) => {
 //Search algorithm
 app.post('/search', (req, res) => {
 
-    var searchAlgorithm = 'SELECT recipeName, rating, totalTime, recipeID FROM recipes where soundex(recipeName) = soundex(?)';
+    var searchAlgorithm = `SELECT recipeName, rating, totalTime, recipeID FROM recipes WHERE substring(soundex(recipeName),2) LIKE concat('%', substring(soundex(?),2), '%')`;
     var recipes = [];
 
     connection.query(searchAlgorithm, [req.body.searchText], (err, results) => {
