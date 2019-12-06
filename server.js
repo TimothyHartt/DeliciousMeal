@@ -20,15 +20,7 @@ app.set('view engine', 'pug'); //Use PUG for dynamic HTML
 var dbOptions = {
     host: 'localhost',
     user: 'root',
-<<<<<<< HEAD
-    password: 'password123',
-<<<<<<< HEAD
-=======
     password: '',
->>>>>>> 4d25cb2b71d7646f8693b060b132b2acf8d019a3
-=======
-    password: '',
->>>>>>> parent of 43e1d53... Update server.js
     database: 'deliciousmeal',
     clearExpired: true, //Remove expired sessions from the database
     checkExpirationInterval: 86400000, //Check for and delete expired sessions every 24 hours
@@ -598,7 +590,7 @@ app.post('/logout', (req, res) => {
 //Search algorithm
 app.post('/search', (req, res) => {
 
-    var searchAlgorithm = 'SELECT recipeName, rating, totalTime, recipeID FROM recipes where soundex(recipeName) = soundex(?)';
+    var searchAlgorithm = `SELECT recipeName, rating, totalTime, recipeID FROM recipes WHERE substring(soundex(recipeName),2) LIKE concat('%', substring(soundex(?),2), '%')`;
     var recipes = [];
 
     connection.query(searchAlgorithm, [req.body.searchText], (err, results) => {
