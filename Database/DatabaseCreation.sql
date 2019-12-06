@@ -346,20 +346,19 @@ VALUES (1, 126, 112, 0.4, 3.5, 0.1, 0, 0, 34, 1.3, 28.8, 3.3, 15.4, 1.4, 2, 18, 
 
 -- ADD RECIPES
 INSERT INTO recipes (recipeID, recipeName, instructions, author, descriptionText, prepTime, cookTime, yield, difficulty, meal, uploadDate)
-VALUES (40, 'Mac N Cheese', 'JDKfjkldsa', 4, 'fdsafds;jkalf', 5, 5, 2, 'easy', 'dinner', SYSDATE());
-
-
-INSERT INTO recipes (recipeID, recipeName, instructions, author, descriptionText, prepTime, cookTime, yield, difficulty, meal, uploadDate)
-VALUES (41, 'Waffles', 'JDKfjkldsa', 4, 'fdsafds;jkalf', 3, 3, 1, 'Hard', 'breakfast', SYSDATE());
+VALUES (40, 'Mac N Cheese', 'Bring water to boil in medium saucepan. Add Macaroni; cook 7 to 8 min. or until tender, stirring occasionally. Drain. (Do not rinse.) Return macaroni to pan. Add margarine, milk and Cheese Sauce Mix; mix well.', 4, 'Discover an easy three-step recipe for making your favorite Macaroni & Cheese Dinner!', 8, 7, 3, 'easy', 'dinner', SYSDATE());
 
 INSERT INTO recipes (recipeID, recipeName, instructions, author, descriptionText, prepTime, cookTime, yield, difficulty, meal, uploadDate)
-VALUES (42, 'Pizza', 'Order it from Dominos', 4, 'A savory Pizza that will bring flavor to your life', 30, 30, 8, 'easy', 'dinner', SYSDATE());
+VALUES (41, 'Waffles', 'Buy eggo waffles. Put waffles in toaster and wait. Add anything extra', 4, 'Delicious waffles ready in minutes.', 3, 3, 1, 'Hard', 'breakfast', SYSDATE());
 
 INSERT INTO recipes (recipeID, recipeName, instructions, author, descriptionText, prepTime, cookTime, yield, difficulty, meal, uploadDate)
-VALUES (43, 'Chicken Noodle Soup', 'Buy it from Luckys Market', 4, 'fdsafds;jkalf', 15, 3, 1, 'easy', 'lunch', SYSDATE());
+VALUES (42, 'Pizza', 'Preheat oven. Place frozen pizza in oven. Wait thirty minutes.', 4, 'A savory Pizza that will bring flavor to your life', 5, 30, 8, 'easy', 'dinner', SYSDATE());
 
 INSERT INTO recipes (recipeID, recipeName, instructions, author, descriptionText, prepTime, cookTime, yield, difficulty, meal, uploadDate)
-VALUES (44, 'Ice Cream', 'Buy it from your local market.', 4, 'Sweet and satisfying!', 2, 2, 8, 'easy', 'dinner', SYSDATE());
+VALUES (43, 'Chicken Noodle Soup', 'Open can. Pour in microwavable bowl. Microwave based on serving size', 4, 'Great for those winter colds!', 0, 4, 1, 'easy', 'lunch', SYSDATE());
+
+INSERT INTO recipes (recipeID, recipeName, instructions, author, descriptionText, prepTime, cookTime, yield, difficulty, meal, uploadDate)
+VALUES (44, 'Ice Cream', 'Buy it from your local market. Scoop however much you want in a bowl', 4, 'Sweet and satisfying!', 2, 2, 1, 'easy', 'dinner', SYSDATE());
 
 INSERT INTO recipes (recipeID, recipeName, instructions, author, descriptionText, prepTime, cookTime, yield, difficulty, meal, uploadDate)
 VALUES (45, 'Coffee', 'Brew Coffee beans.', 4, 'Nothing like a kick in the head to wake you up.', 1, 10, 4, 'easy', 'dinner', SYSDATE());
