@@ -21,7 +21,6 @@ var dbOptions = {
     host: 'localhost',
     user: 'root',
     password: 'password123',
-    password: '',
     database: 'deliciousmeal',
     clearExpired: true, //Remove expired sessions from the database
     checkExpirationInterval: 86400000, //Check for and delete expired sessions every 24 hours
