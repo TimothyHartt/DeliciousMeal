@@ -22,9 +22,13 @@ var dbOptions = {
     user: 'root',
 <<<<<<< HEAD
     password: 'password123',
+<<<<<<< HEAD
 =======
     password: '',
 >>>>>>> 4d25cb2b71d7646f8693b060b132b2acf8d019a3
+=======
+    password: '',
+>>>>>>> parent of 43e1d53... Update server.js
     database: 'deliciousmeal',
     clearExpired: true, //Remove expired sessions from the database
     checkExpirationInterval: 86400000, //Check for and delete expired sessions every 24 hours
